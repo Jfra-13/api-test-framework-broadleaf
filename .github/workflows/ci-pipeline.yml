@@ -15,7 +15,7 @@ name: CI - Pruebas de API Broadleaf
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   workflow_dispatch:        # Botón "Run workflow" en la pestaña Actions (ideal con ngrok arriba)
 
 # Permisos que necesita el despliegue a GitHub Pages
