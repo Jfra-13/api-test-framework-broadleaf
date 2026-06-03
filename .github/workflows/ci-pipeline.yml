@@ -1,0 +1,87 @@
+# ============================================================================
+#  OE3 - Integración Continua (CI/CD)
+#  Pipeline del framework de automatización de pruebas de API (Broadleaf).
+#
+#  Qué hace:
+#   1. Levanta un contenedor Ubuntu con JDK 17 en la nube de GitHub.
+#   2. Descarga el código del framework y ejecuta la suite (mvn clean test).
+#      El SUT (Broadleaf) corre en tu PC y se expone con un túnel ngrok; su URL
+#      pública viaja en el Secret BASE_URL y se inyecta como variable de entorno.
+#   3. Genera el reporte Allure y lo publica en GitHub Pages (URL navegable).
+#
+#  Disparadores: push a main  +  ejecución manual (workflow_dispatch).
+# ============================================================================
+name: CI - Pruebas de API Broadleaf
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:        # Botón "Run workflow" en la pestaña Actions (ideal con ngrok arriba)
+
+# Permisos que necesita el despliegue a GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita que dos corridas pisen el mismo despliegue de Pages al mismo tiempo
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # --------------------------------------------------------------------------
+  # JOB 1: compila, ejecuta las pruebas y arma el reporte Allure
+  # --------------------------------------------------------------------------
+  api-tests:
+    name: Ejecutar pruebas y generar reporte Allure
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Descargar el código del framework
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar JDK 17 (Temurin) + caché de Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: 3. Ejecutar la suite de pruebas (mvn clean test)
+        env:
+          # URL pública de ngrok (incluyendo /api/v1), guardada como Secret del repo.
+          # BaseApiClient la lee vía System.getenv("BASE_URL").
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: mvn -B clean test
+
+      - name: 4. Generar el reporte Allure (sitio HTML estático)
+        run: mvn -B allure:report
+        # Salida: target/site/allure-maven-plugin/
+
+      - name: 5. Subir resultados crudos de Allure como artifact descargable
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+          retention-days: 30
+
+      - name: 6. Empaquetar el reporte para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/site/allure-maven-plugin
+
+  # --------------------------------------------------------------------------
+  # JOB 2: publica el reporte Allure en GitHub Pages
+  # --------------------------------------------------------------------------
+  deploy-report:
+    name: Publicar reporte en GitHub Pages
+    needs: api-tests
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar a GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

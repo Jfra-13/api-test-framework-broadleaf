@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Order Payment Schema",
+  "type": "object",
+  "required": ["id", "orderId", "type", "amount"],
+  "properties": {
+    "id": { "type": "integer" },
+    "orderId": { "type": "integer" },
+    "type": { "type": "string" },
+    "amount": { "type": "number" },
+    "currency": { "type": ["string", "null"] },
+    "gatewayType": { "type": ["string", "null"] },
+    "billingAddress": { "type": ["object", "null"] },
+    "transactions": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["type", "success", "amount"],
+        "properties": {
+          "id": { "type": "integer" },
+          "type": { "type": "string" },
+          "success": { "type": "boolean" },
+          "amount": { "type": "number" }
+        }
+      }
+    },
+    "active": { "type": "boolean" }
+  }
+}

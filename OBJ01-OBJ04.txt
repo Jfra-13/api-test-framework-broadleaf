@@ -1,0 +1,148 @@
+Para asegurar que esta ejecución tenga un nivel de Ingeniería de Software impecable, vamos a separar rigurosamente los dos mundos de tu proyecto:
+
+1. **El Sistema Bajo Prueba (SUT):** El backend de Broadleaf Commerce (tu "paciente" de laboratorio).
+    
+2. **Tu Producto (El Framework):** Tu código de automatización de APIs.
+    
+
+Aquí tienes la guía de ejecución técnica, paso a paso, desde el Objetivo 1 hasta el 4.
+
+### Objetivo Específico 1 (OE1): Despliegue de la Línea Base y Análisis de Endpoints
+
+_El objetivo aquí es levantar el motor de la tienda (Broadleaf) en tu máquina local y mapear los contratos de las APIs que vas a someter a prueba._
+
+**Paso 1: Preparación del Entorno Local**
+
+- **Acción:** Instala Java JDK 17 (o la versión que requiera tu rama de Broadleaf), Apache Maven y un IDE profesional como IntelliJ IDEA.
+    
+- **Acción:** Descarga e instala **Postman** (o Insomnia) para la exploración manual de las APIs.
+    
+
+**Paso 2: Clonación y Despliegue del SUT (Broadleaf Backend)**
+
+- **En GitHub/Local:** Clona el repositorio de Broadleaf Commerce (específicamente el _DemoSite_ o el módulo de APIs) en una carpeta dedicada, por ejemplo: `C:\Tesis\Broadleaf_SUT`.
+    
+- **En IntelliJ:** Abre este proyecto. Broadleaf típicamente utiliza Spring Boot y levanta una base de datos en memoria (HSQLDB) por defecto.
+    
+- **En la Terminal:** Ejecuta el comando de compilación y levantamiento: `mvn clean install` `mvn spring-boot:run`
+    
+- **Verificación:** Abre tu navegador y ve a `http://localhost:8080/api/v1/swagger-ui.html` (o la ruta de Swagger que exponga Broadleaf) para confirmar que el backend está vivo y documentado.
+    
+
+**Paso 3: Levantamiento de la Línea Base (Mapeo de Contratos)**
+
+- **En Postman:** Crea una nueva Colección llamada "Broadleaf Tesis - Baseline".
+    
+- **Acción:** Ejecuta llamadas manuales a los endpoints más críticos para un flujo de e-commerce. Ejemplo:
+    
+    - `POST /api/v1/customer` (Crear cliente)
+        
+    - `GET /api/v1/catalog/products` (Buscar productos)
+        
+    - `POST /api/v1/cart/items` (Añadir al carrito)
+        
+- **Documentación:** Guarda los cuerpos de respuesta (JSON) en archivos de texto. Estos JSON son tus **Contratos Base**. Analiza qué campos son obligatorios y cómo se relacionan los IDs.
+    
+	
+### Objetivo Específico 2 (OE2): Diseño y Construcción del Framework (Versión 1.0)
+
+_El objetivo aquí es programar tu arquitectura en capas para automatizar lo que hiciste manualmente en el OE1._
+
+**Paso 1: Inicialización del Repositorio de Pruebas**
+
+- **En GitHub:** Crea un repositorio nuevo (totalmente independiente del SUT) llamado `framework-automatizacion-api`.
+    
+- **En Local:** Clónalo en `C:\Tesis\Framework_QA`.
+    
+
+**Paso 2: Configuración del Stack Tecnológico (`pom.xml`)**
+
+- **En IntelliJ:** Abre tu nuevo repositorio y configúralo como un proyecto Maven.
+    
+- **Acción:** Agrega las siguientes dependencias críticas en tu archivo `pom.xml`:
+    
+    - `rest-assured` (Para consumir las APIs).
+        
+    - `cucumber-java` y `cucumber-junit-platform-engine` (Para el BDD).
+        
+    - `json-schema-validator` (Para hacer Contract Testing).
+        
+    - `allure-cucumber7-jvm` (Para los reportes de calidad).
+        
+    - `lombok` (Para reducir código repetitivo).
+        
+
+**Paso 3: Estructuración Arquitectónica Multicapa**
+
+- **Acción:** Crea la siguiente jerarquía de paquetes (carpetas) para desacoplar el código:
+    
+    - `src/test/resources/features/`: Aquí vivirán tus archivos `.feature` escritos en lenguaje Gherkin.
+        
+    - `src/test/java/steps/`: Clases Java (Step Definitions) que conectan el Gherkin con el código.
+        
+    - `src/test/java/clients/`: **¡Tu capa estrella!** En lugar del POM (Web), usarás el _API Client Pattern_. Aquí crearás clases como `CatalogApiClient.java` o `CartApiClient.java` que contienen los métodos HTTP base de RestAssured.
+        
+    - `src/test/java/utils/`: Para utilidades de tokens y generación de data falsa con Java Faker.
+        
+
+**Paso 4: Implementación del Flujo de Pruebas**
+
+- **Acción:** Escribe tu primer escenario en Gherkin (ej. `checkout_api.feature`).
+    
+- **Acción:** Programa las aserciones en RestAssured verificando dos cosas: que el `statusCode` sea el correcto (200 o 201), y validando que el esquema del JSON coincida con la Línea Base del OE1 usando `matchesJsonSchemaInClasspath()`.
+    
+
+### Objetivo Específico 3 (OE3): Integración Continua (CI/CD)
+
+_El objetivo es sacar el framework de tu computadora y lograr la ejecución desatendida en la nube._
+
+**Paso 1: Configuración de GitHub Actions**
+
+- **En Local:** Dentro del proyecto de tu framework, crea la ruta de carpetas `.github/workflows/`.
+    
+- **Acción:** Crea un archivo llamado `ci-pipeline.yml`.
+    
+
+**Paso 2: Programación del Pipeline**
+
+- **Acción:** En tu archivo YAML, define los "Jobs" (trabajos). Debes indicarle a la nube de GitHub que:
+    
+    1. Cree un contenedor con Ubuntu y Java 17.
+        
+    2. Descargue el código de tu framework.
+        
+    3. _(Importante)_ Como Broadleaf corre en tu máquina local, tu pipeline en la nube no podrá ver tu "localhost". Tienes dos opciones técnicas:
+        
+        - **Opción A (Recomendada para CI):** En el mismo pipeline, agregar un "Job" previo que levante la imagen Docker del backend de Broadleaf en background.
+            
+        - **Opción B:** Exponer tu servidor local de Broadleaf mediante un túnel seguro (como Ngrok) y pasarle esa URL pública a GitHub Actions mediante "GitHub Secrets".
+            
+    4. Ejecute el comando `mvn clean test`.
+        
+
+**Paso 3: Generación del Reporte Desatendido**
+
+- **Acción:** En el mismo archivo YAML, agrega un paso final (Action) que tome los resultados generados por Allure y los publique automáticamente usando "GitHub Pages".
+    
+- **En GitHub:** Haz `git push`. Ve a la pestaña "Actions" y observa cómo se compila y ejecuta todo automáticamente.
+    
+
+### Objetivo Específico 4 (OE4): El Experimento de Inyección y Code Churn
+
+_El objetivo es demostrar matemáticamente que tu diseño arquitectónico absorbe los cambios y minimiza la Deuda Técnica._
+
+**Paso 1: La Inyección del Cambio (Mutación en SUT)**
+
+- **En IntelliJ (Proyecto Broadleaf):** Modifica intencionalmente un Controlador REST. Por ejemplo, ve al endpoint de crear carrito y cambia la llave del JSON de respuesta de `"cartId"` a `"idCarrito"`. Recompila y levanta Broadleaf.
+    
+
+**Paso 2: Captura de la Falla**
+
+- **En Local/CI:** Ejecuta tu framework de pruebas. La prueba va a fallar estrepitosamente porque el contrato JSON se rompió. Registra este error como un falso positivo por ruptura contractual.
+    
+
+**Paso 3: Cuantificación del Code Churn**
+
+- **En IntelliJ (Tu Framework):** ¿Cuántas líneas tienes que modificar para arreglarlo? Gracias a tu arquitectura, no tocarás ni un solo archivo `.feature` (Gherkin), ni tocarás la capa de `steps`. Iras directamente a la carpeta `clients`, actualizarás el validador JSON (1 línea) y listo.
+    
+- **Métrica Final:** Realizas un `git diff`. Demuestras en tu tesis que el _Code Churn_ fue de 1 sola línea de código frente a las 800 líneas totales de tu framework. Hipótesis de mantenibilidad comprobada.

@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Catalog Search Schema",
+  "type": "object",
+  "required": ["products"],
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "defaultSku"],
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "url": { "type": ["string", "null"] },
+          "retailPrice": { "type": ["object", "null"] },
+          "salePrice": { "type": ["object", "null"] },
+          "defaultSku": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": { "type": "integer" },
+              "name": { "type": ["string", "null"] },
+              "retailPrice": { "type": ["object", "null"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

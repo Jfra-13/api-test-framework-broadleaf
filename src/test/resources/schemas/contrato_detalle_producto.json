@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Generated Schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "null"
+    },
+    "longDescription": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "retailPrice": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ]
+    },
+    "salePrice": {
+      "type": ["object", "null"]
+    },
+    "primaryMedia": {
+      "type": "object",
+      "properties": {
+        "allowOverrideUrl": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "altText": {
+          "type": "string"
+        },
+        "tags": {
+          "type": ["string", "null"]
+        },
+        "archived": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "allowOverrideUrl",
+        "id",
+        "title",
+        "url",
+        "altText"
+      ]
+    },
+    "dynamicSkuPrices": {
+      "type": "null"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "productOptions": {
+      "type": ["array", "null"]
+    },
+    "priority": {
+      "type": "null"
+    },
+    "bundleItemsRetailPrice": {
+      "type": "null"
+    },
+    "bundleItemsSalePrice": {
+      "type": "null"
+    },
+    "activeStartDate": {
+      "type": ["string", "null"]
+    },
+    "activeEndDate": {
+      "type": ["string", "null"]
+    },
+    "manufacturer": {
+      "type": ["string", "null"]
+    },
+    "model": {
+      "type": ["string", "null"]
+    },
+    "promoMessage": {
+      "type": ["string", "null"]
+    },
+    "defaultSku": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "activeStartDate": {
+          "type": ["string", "null"]
+        },
+        "activeEndDate": {
+          "type": ["string", "null"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "inventoryType": {
+          "type": ["string", "null"]
+        },
+        "description": {
+          "type": ["string", "null"]
+        },
+        "retailPrice": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        },
+        "salePrice": {
+          "type": ["object", "null"]
+        },
+        "weight": {
+          "type": ["object", "null"]
+        },
+        "dimension": {
+          "type": ["object", "null"]
+        },
+        "archived": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "active",
+        "available",
+        "retailPrice"
+      ]
+    },
+    "additionalSkus": {
+      "type": ["array", "null"]
+    },
+    "defaultCategoryId": {
+      "type": ["integer", "null"]
+    },
+    "upsaleProducts": {
+      "type": ["array", "null"]
+    },
+    "crossSaleProducts": {
+      "type": ["array", "null"]
+    },
+    "productAttributes": {
+      "type": ["array", "null"]
+    },
+    "media": {
+      "type": ["array", "null"]
+    },
+    "skuBundleItems": {
+      "type": ["array", "null"]
+    },
+    "promotionMessages": {
+      "type": ["array", "null"]
+    },
+    "archived": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "url",
+    "retailPrice",
+    "primaryMedia",
+    "active",
+    "defaultSku"
+  ]
+}

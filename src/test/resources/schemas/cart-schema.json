@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cart Schema - Broadleaf Commerce",
+  "type": "object",
+  "required": ["id", "status", "itemCount"],
+  "properties": {
+    "id": { "type": "integer" },
+    "orderNumber": { "type": ["string", "null"] },
+    "status": { "type": "string", "enum": ["IN_PROCESS", "SUBMITTED"] },
+    "submitDate": { "type": ["string", "null"] },
+    "itemCount": { "type": "integer" },
+    "subTotal": { "type": ["object", "null"] },
+    "total": { "type": ["object", "null"] },
+    "totalTax": { "type": ["object", "null"] },
+    "totalShipping": { "type": ["object", "null"] },
+    "itemAdjustmentsValue": { "type": ["object", "null"] },
+    "orderAdjustmentsValue": { "type": ["object", "null"] },
+    "totalAdjustmentsValue": { "type": ["object", "null"] },
+    "customer": { "type": ["object", "null"] },
+    "orderItems": { "type": ["array", "null"] },
+    "fulfillmentGroups": { "type": ["array", "null"] },
+    "payments": { "type": ["array", "null"] },
+    "orderAttributes": { "type": ["object", "null"] },
+    "cartMessages": { "type": ["array", "null"] }
+  }
+}
