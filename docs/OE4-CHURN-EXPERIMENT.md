@@ -50,7 +50,8 @@ exclusivamente en el repositorio del Framework. La mutación del SUT **no** cuen
 El bean `OrderWrapper` de Broadleaf (que serializa la respuesta de `/cart`) está
 declarado en XML de la librería (`bl-api-applicationContext-wrapper.xml`) con
 `@XmlAccessorType(FIELD)`. Para una inyección **controlada, quirúrgica y reversible**,
-se intercepta la respuesta de `GET /cart` con un filtro de servlet
+se interceptan las dos respuestas validadas contra `cart-schema.json`
+(`GET /cart` y `POST /cart/{id}/item`) con un filtro de servlet
 (`Oe4CartContractMutationFilter.java`) que renombra **una** llave de primer nivel del
 JSON. Es el equivalente observable a renombrar un campo en el controller/DTO del backend.
 
@@ -94,10 +95,10 @@ Cada mutación es un **ciclo independiente sobre árbol limpio**:
 | | **Mutación A — "solo-contrato"** | **Mutación B — "funcional"** |
 |---|---|---|
 | Llave mutada en SUT | `customer` → `cliente` | `id` → `idCarrito` |
-| ¿Quién la referencia en el framework? | **Nadie** en steps/features. Solo el contrato. | `cart-schema` + `CartSteps` (x2) + `CheckoutSteps` + `cart.feature` + `checkout.feature` |
+| ¿Quién la referencia en el framework? | **Nadie** en steps/features. Solo el contrato. | `cart-schema` + `CartSteps` (x2) + `cart.feature` + `checkout.feature` |
 | Falla esperada | Validación de contrato `cart-schema.json` | Contrato **+** flujo funcional (cartId = `null` → `/cart/null/item` falla) |
 | Capas tocadas al arreglar | Contrato | Contrato + Steps + Especificación |
-| Churn esperado | **~1 línea / 1 archivo** | **~6 líneas / 5 archivos** |
+| Churn esperado | **~1 línea / 1 archivo** | **~5 líneas / 4 archivos** |
 
 ---
 

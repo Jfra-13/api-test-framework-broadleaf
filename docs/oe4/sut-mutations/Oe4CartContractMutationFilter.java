@@ -10,9 +10,10 @@
  *       com\community\api\endpoint\cart\Oe4CartContractMutationFilter.java
  *
  * QUÉ HACE:
- *   Intercepta SOLO la respuesta de `GET /cart` y renombra UNA llave de
- *   primer nivel del JSON, rompiendo el contrato que valida el framework.
- *   Es el equivalente observable a renombrar un campo en el controller REST.
+ *   Intercepta las DOS respuestas que el framework valida contra `cart-schema.json`
+ *   (`GET /cart` y `POST /cart/{id}/item`) y renombra UNA llave de primer nivel del
+ *   JSON, rompiendo el contrato. Las respuestas de checkout/payment quedan intactas.
+ *   Es el equivalente observable a renombrar un campo en el controller/DTO del backend.
  *
  * CÓMO SE CONTROLA:
  *   - ACTIVE   = true/false  -> activa o desactiva la mutación (reversible).
@@ -65,12 +66,19 @@ public class Oe4CartContractMutationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         String uri = request.getRequestURI();
-        boolean isGetCart = "GET".equalsIgnoreCase(request.getMethod())
-                && uri != null
-                && (uri.endsWith("/cart") || uri.endsWith("/cart/"));
+        String method = request.getMethod();
 
-        // Si está inactivo o no es GET /cart, pasa de largo sin tocar nada.
-        if (!ACTIVE || !isGetCart) {
+        // El cart-schema.json valida DOS respuestas: GET /cart y POST /cart/{id}/item.
+        // Para que la mutación de contrato sea consistente, se renombra la llave en ambas
+        // (las respuestas de checkout/payment quedan intactas).
+        boolean isGetCart = "GET".equalsIgnoreCase(method)
+                && uri != null && (uri.endsWith("/cart") || uri.endsWith("/cart/"));
+        boolean isAddItem = "POST".equalsIgnoreCase(method)
+                && uri != null && uri.matches(".*/cart/[^/]+/item/?");
+        boolean shouldMutate = isGetCart || isAddItem;
+
+        // Si está inactivo o no es una respuesta validada por cart-schema, pasa de largo.
+        if (!ACTIVE || !shouldMutate) {
             chain.doFilter(req, res);
             return;
         }

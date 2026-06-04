@@ -117,12 +117,14 @@ pero aquí está el mapa):
 
 | Archivo | Línea aprox. | Cambio |
 |---|---|---|
-| `schemas/cart-schema.json` | `required` + `properties` | `id` → `idCarrito` |
+| `schemas/cart-schema.json` | `required` (y opcional `properties`) | `id` → `idCarrito` |
 | `steps/CartSteps.java` | ~24 | `getString("id")` → `getString("idCarrito")` |
 | `steps/CartSteps.java` | ~63 | `getString("id")` → `getString("idCarrito")` |
-| `steps/CheckoutSteps.java` | ~39 | `get("id")` → `get("idCarrito")` |
 | `features/cart.feature` | ~10 | `campo "id"` → `campo "idCarrito"` |
 | `features/checkout.feature` | ~16 | `campo "id"` → `campo "idCarrito"` |
+
+> Nota: `CheckoutSteps` lee `"id"` de la respuesta de `PUT /shipping` (que el filtro **no**
+> muta), así que **no** se toca. El filtro solo muta `GET /cart` y `POST /cart/{id}/item`.
 
 Corre `RunCucumberTest` → **debe volver a verde**.
 📸 *Captura:* verde.
@@ -132,7 +134,7 @@ Corre `RunCucumberTest` → **debe volver a verde**.
 git --no-pager diff --stat
 git --no-pager diff
 ```
-➡️ **Anota** archivos y líneas (esperado: ~5 archivos, ~6 líneas) y *pásame la salida*.
+➡️ **Anota** archivos y líneas (esperado: ~4 archivos, ~5 líneas) y *pásame la salida*.
 
 ### B.5 — Cerrar el experimento 🟦🟥
 ```powershell
