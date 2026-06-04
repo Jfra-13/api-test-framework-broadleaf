@@ -104,51 +104,94 @@ Cada mutación es un **ciclo independiente sobre árbol limpio**:
 
 ## 6. Resultados — Mutación A (`customer` → `cliente`)
 
-- 📸 Evidencia ROJO: _(pegar captura)_
-- 📸 Evidencia VERDE: _(pegar captura)_
+- 📸 Evidencia ROJO: _(opcional — re-inyectar sin el fix para capturar la falla de contrato)_
+- 📸 Evidencia VERDE: ✅ suite completa en verde (exit code 0, 6/6 escenarios).
+  - Corroboración objetiva: `Body Length` del carrito pasó de **651 → 650** bytes
+    (`"customer"` 8 chars → `"cliente"` 7 chars), confirmando que la mutación se aplicó.
 
 **`git diff --stat`:**
 ```
-(pegar salida)
+ src/test/resources/schemas/cart-schema.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 ```
 
 **`git diff`:**
 ```diff
-(pegar salida)
+@@ -2,7 +2,7 @@
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "title": "Cart Schema - Broadleaf Commerce",
+   "type": "object",
+-  "required": ["id", "status", "itemCount", "customer"],
++  "required": ["id", "status", "itemCount", "cliente"],
+   "properties": {
 ```
 
 | Métrica | Valor |
 |---|---|
-| Archivos modificados | _(a completar)_ |
-| Líneas modificadas (Code Churn) | _(a completar)_ |
-| Archivos `.feature` tocados | _(esperado: 0)_ |
-| Archivos `steps/` tocados | _(esperado: 0)_ |
-| Ratio churn / 2.187 | _(a completar)_ |
+| Archivos modificados | **1** (`cart-schema.json`) |
+| Líneas modificadas (Code Churn) | **1** |
+| Archivos `.feature` tocados | **0** ✅ |
+| Archivos `steps/` tocados | **0** ✅ |
+| Ratio churn / 2.187 | **≈ 0,05 %** |
 
 ---
 
 ## 7. Resultados — Mutación B (`id` → `idCarrito`)
 
-- 📸 Evidencia ROJO: _(pegar captura)_
-- 📸 Evidencia VERDE: _(pegar captura)_
+- 📸 Evidencia ROJO: _(captura del usuario — fallo del contrato `cart-schema.json` + cartId nulo)_
+- 📸 Evidencia VERDE: ✅ suite completa en verde (exit code 0, 6/6 escenarios).
+  - Corroboración objetiva: `Body Length` del carrito pasó de **651 → 658** bytes
+    (`"id"` → `"idCarrito"`, +7 chars), y la respuesta de add-item de **3538 → 3545**,
+    confirmando que la mutación se aplicó en las dos respuestas validadas por `cart-schema`.
 
-**`git diff --stat`:**
+> ⚠️ **Nota metodológica:** el `git diff` crudo incluía además `docs/OE4-CHURN-EXPERIMENT.md`
+> (cambio de documentación, sin commitear), que **NO** se contabiliza como churn — la
+> documentación no forma parte del producto (denominador = 2.187 = java+features+schemas+pom).
+> El churn real son los **4 archivos del framework** listados abajo.
+
+**`git diff --stat` (solo archivos del producto):**
 ```
-(pegar salida)
+ src/test/resources/schemas/cart-schema.json        | 2 +-
+ src/test/java/com/tesis/automation/steps/CartSteps.java | 4 ++--
+ src/test/resources/features/cart.feature           | 2 +-
+ src/test/resources/features/checkout.feature       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 ```
 
 **`git diff`:**
 ```diff
-(pegar salida)
+--- a/src/test/resources/schemas/cart-schema.json
++++ b/src/test/resources/schemas/cart-schema.json
+-  "required": ["id", "status", "itemCount", "customer"],
++  "required": ["idCarrito", "status", "itemCount", "customer"],
+
+--- a/src/test/java/com/tesis/automation/steps/CartSteps.java
++++ b/src/test/java/com/tesis/automation/steps/CartSteps.java
+@@ userGetsNewCart()
+-        String cartId = response.jsonPath().getString("id");
++        String cartId = response.jsonPath().getString("idCarrito");
+@@ captureCartId()
+-        String cartId = response.jsonPath().getString("id");
++        String cartId = response.jsonPath().getString("idCarrito");
+
+--- a/src/test/resources/features/cart.feature
++++ b/src/test/resources/features/cart.feature
+-    And la respuesta contiene un campo "id" de tipo número
++    And la respuesta contiene un campo "idCarrito" de tipo número
+
+--- a/src/test/resources/features/checkout.feature
++++ b/src/test/resources/features/checkout.feature
+-    And la respuesta contiene un campo "id" de tipo número
++    And la respuesta contiene un campo "idCarrito" de tipo número
 ```
 
 | Métrica | Valor |
 |---|---|
-| Archivos modificados | _(a completar)_ |
-| Líneas modificadas (Code Churn) | _(a completar)_ |
-| Archivos `.feature` tocados | _(a completar)_ |
-| Líneas del **flujo de negocio** del escenario modificadas | _(esperado: 0 — solo cambian literales de nombre de campo)_ |
-| Ratio churn / 2.187 | _(a completar)_ |
+| Archivos modificados | **4** (cart-schema, CartSteps, cart.feature, checkout.feature) |
+| Líneas modificadas (Code Churn) | **5** |
+| Desglose por capa | Contrato **1** + Steps **2** + Especificación **2** |
+| Líneas del **flujo de negocio** del escenario modificadas | **0** (solo cambió el literal del nombre del campo, no la secuencia Given/When/Then) |
+| Ratio churn / 2.187 | **≈ 0,23 %** |
 
 ---
 
@@ -156,11 +199,11 @@ Cada mutación es un **ciclo independiente sobre árbol limpio**:
 
 | | Mutación A (contrato) | Mutación B (funcional) |
 |---|---|---|
-| Code Churn (líneas) | _(A)_ | _(B)_ |
-| Archivos | _(A)_ | _(B)_ |
-| Capas afectadas | Contrato | Contrato + Steps + Spec |
-| ¿Tocó la lógica de negocio (flujo Gherkin)? | No | No (solo literales) |
-| Ratio sobre 2.187 líneas | _(A)_ | _(B)_ |
+| Code Churn (líneas) | **1** | **5** |
+| Archivos | **1** | **4** |
+| Capas afectadas | Contrato | Contrato (1) + Steps (2) + Spec (2) |
+| ¿Tocó la lógica de negocio (flujo Gherkin)? | **No** | **No** (solo literales de nombre de campo) |
+| Ratio sobre 2.187 líneas | **≈ 0,05 %** | **≈ 0,23 %** |
 
 **Lectura:**
 - La **Mutación A** confirma el caso ideal de la hipótesis: el *contract testing*
@@ -178,12 +221,26 @@ al de A. Esto refuerza el principio de **diseño para el cambio**.
 
 ## 9. Conclusión
 
-_(A completar con los números reales.)_
+El experimento **valida la hipótesis de mantenibilidad (H1)** con datos concretos:
 
-La arquitectura multicapa propuesta **valida la hipótesis de mantenibilidad**: un cambio
-de contrato del SUT se reabsorbe con un Code Churn de **N líneas sobre 2.187** (≈ X %),
-localizado en las capas inferiores, demostrando una **deuda técnica mínima** frente a la
-evolución del backend.
+- **Mutación A (ruptura pura de contrato):** Code Churn = **1 línea / 1 archivo**
+  (≈ 0,05 % de las 2.187 líneas del producto), **sin tocar features ni steps**. El
+  *contract testing* centralizado en JSON Schema absorbe el cambio en un único punto.
+- **Mutación B (campo con acoplamiento funcional):** Code Churn = **5 líneas / 4 archivos**
+  (≈ 0,23 %), repartido en Contrato (1) + Steps (2) + Especificación (2). Mayor que A,
+  pero igualmente **mínimo y acotado a las capas técnicas**; el **flujo de negocio**
+  descrito en Gherkin **no cambió** (solo el literal del nombre del campo).
+
+En ambos casos el churn es **inferior al 0,25 %** del tamaño del framework y **ningún
+cambio alteró la lógica de negocio** de los escenarios. Esto demuestra cuantitativamente
+que la arquitectura multicapa propuesta **minimiza la deuda técnica** ante la evolución
+del contrato del SUT.
+
+**Aporte adicional (hallazgo de diseño):** el contraste A-vs-B evidencia que el costo de
+mantenimiento crece cuando el nombre de un campo se **filtra** a capas superiores
+(steps y, sobre todo, al Gherkin). La recomendación de diseño derivada es **delegar la
+validación estructural íntegramente al contrato (schema)** y **centralizar la captura de
+identificadores**, lo que acercaría el churn de un cambio funcional (B) al caso ideal (A).
 
 ---
 
