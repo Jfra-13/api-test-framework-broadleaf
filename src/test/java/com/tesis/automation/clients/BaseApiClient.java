@@ -7,13 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
-
-/**
- * Cliente Base para todas las llamadas HTTP
- *
+/** * Cliente Base para todas las llamadas HTTP
  * Este patrón desacopla RestAssured de la lógica de pruebas
- * OE2 - Capa de Abstracción de API
- */
+ * OE2 - Capa de Abstracción de API */
 public abstract class BaseApiClient {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseApiClient.class);
@@ -125,7 +121,7 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * Log de respuesta importante
+     * Log de respuesta
      */
     protected void logResponse(Response response) {
         logger.info("Status: {} | Body Length: {}", response.getStatusCode(), response.getBody().asString().length());

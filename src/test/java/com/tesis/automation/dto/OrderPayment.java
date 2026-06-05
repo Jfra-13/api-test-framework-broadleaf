@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 /**
  * DTO para Pago de Orden
  * Contrato Base OE1: Estructura real de Broadleaf OrderPayment
@@ -25,10 +24,10 @@ public class OrderPayment {
     private Long orderId;
 
     @JsonProperty("type")
-    private String type; // CREDIT_CARD, etc.
+    private String type;
 
     @JsonProperty("gatewayType")
-    private String gatewayType; // NULL_GATEWAY para tests
+    private String gatewayType;
 
     @JsonProperty("amount")
     private Double amount;

@@ -1,0 +1,327 @@
+juanf@0HUMOR MINGW64 /c/software/projects/TESIS_QA/AutomationFramework/broadleaf-api-test (master)
+$  git --no-pager diff --stat
+warning: in the working copy of 'docs/OE4-CHURN-EXPERIMENT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/java/com/tesis/automation/steps/CartSteps.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/resources/features/cart.feature', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/resources/features/checkout.feature', LF will be replaced by CRLF the next time Git touches it
+ docs/OE4-CHURN-EXPERIMENT.md                       | 27 ++++++++++++++--------
+ .../java/com/tesis/automation/steps/CartSteps.java |  4 ++--
+ src/test/resources/features/cart.feature           |  2 +-
+ src/test/resources/features/checkout.feature       |  2 +-
+ src/test/resources/schemas/cart-schema.json        |  2 +-
+ 5 files changed, 23 insertions(+), 14 deletions(-)
+
+
+juanf@0HUMOR MINGW64 /c/software/projects/TESIS_QA/AutomationFramework/broadleaf-api-test (master)
+$   git --no-pager diff
+warning: in the working copy of 'docs/OE4-CHURN-EXPERIMENT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/java/com/tesis/automation/steps/CartSteps.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/resources/features/cart.feature', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/resources/features/checkout.feature', LF will be replaced by CRLF the next time Git touches it
+diff --git a/docs/OE4-CHURN-EXPERIMENT.md b/docs/OE4-CHURN-EXPERIMENT.md
+index 86dfcfc..81c1abc 100644
+--- a/docs/OE4-CHURN-EXPERIMENT.md
++++ b/docs/OE4-CHURN-EXPERIMENT.md
+@@ -104,26 +104,35 @@ Cada mutación es un **ciclo independiente sobre árbol limpio**:
+ 
+ ## 6. Resultados — Mutación A (`customer` → `cliente`)
+ 
+-- 📸 Evidencia ROJO: _(pegar captura)_
+-- 📸 Evidencia VERDE: _(pegar captura)_
++- 📸 Evidencia ROJO: _(opcional — re-inyectar sin el fix para capturar la falla de contrato)_
++- 📸 Evidencia VERDE: ✅ suite completa en verde (exit code 0, 6/6 escenarios).
++  - Corroboración objetiva: `Body Length` del carrito pasó de **651 → 650** bytes
++    (`"customer"` 8 chars → `"cliente"` 7 chars), confirmando que la mutación se aplicó.
+ 
+ **`git diff --stat`:**
+ ```
+-(pegar salida)
++ src/test/resources/schemas/cart-schema.json | 2 +-
++ 1 file changed, 1 insertion(+), 1 deletion(-)
+ ```
+ 
+ **`git diff`:**
+ ```diff
+-(pegar salida)
++@@ -2,7 +2,7 @@
++   "$schema": "http://json-schema.org/draft-07/schema#",
++   "title": "Cart Schema - Broadleaf Commerce",
++   "type": "object",
++-  "required": ["id", "status", "itemCount", "customer"],
+++  "required": ["id", "status", "itemCount", "cliente"],
++   "properties": {
+ ```
+ 
+ | Métrica | Valor |
+ |---|---|
+-| Archivos modificados | _(a completar)_ |
+-| Líneas modificadas (Code Churn) | _(a completar)_ |
+-| Archivos `.feature` tocados | _(esperado: 0)_ |
+-| Archivos `steps/` tocados | _(esperado: 0)_ |
+-| Ratio churn / 2.187 | _(a completar)_ |
++| Archivos modificados | **1** (`cart-schema.json`) |
++| Líneas modificadas (Code Churn) | **1** |
++| Archivos `.feature` tocados | **0** ✅ |
++| Archivos `steps/` tocados | **0** ✅ |
++| Ratio churn / 2.187 | **≈ 0,05 %** |
+ 
+ ---
+ 
+diff --git a/src/test/java/com/tesis/automation/steps/CartSteps.java b/src/test/java/com/tesis/automation/steps/CartSteps.java
+index 0cb234c..3565d54 100644
+--- a/src/test/java/com/tesis/automation/steps/CartSteps.java
++++ b/src/test/java/com/tesis/automation/steps/CartSteps.java
+@@ -21,7 +21,7 @@ public class CartSteps {
+         Response response = cartApiClient.getOrCreateCart();
+         assertThat(response.getStatusCode(), is(200));
+ 
+-        String cartId = response.jsonPath().getString("id");
++        String cartId = response.jsonPath().getString("idCarrito");
+         ScenarioContext.set(ScenarioContext.Keys.CART_ID, cartId);
+         ScenarioContext.set(ScenarioContext.Keys.LAST_RESPONSE, response);
+ 
+@@ -60,7 +60,7 @@ public class CartSteps {
+     @Then("se captura el cartId para usar en próximas solicitudes")
+     public void captureCartId() {
+         Response response = (Response) ScenarioContext.get(ScenarioContext.Keys.LAST_RESPONSE);
+-        String cartId = response.jsonPath().getString("id");
++        String cartId = response.jsonPath().getString("idCarrito");
+         ScenarioContext.set(ScenarioContext.Keys.CART_ID, cartId);
+         System.out.println("Cart ID capturado: " + cartId);
+     }
+diff --git a/src/test/resources/features/cart.feature b/src/test/resources/features/cart.feature
+index 0749d75..892d54e 100644
+--- a/src/test/resources/features/cart.feature
++++ b/src/test/resources/features/cart.feature
+@@ -7,7 +7,7 @@ Feature: Gestión del Carrito de Compras
+   Scenario: Creación de un carrito nuevo
+     Given el usuario obtiene un nuevo carrito de compras
+     Then la respuesta debe tener código de estado 200
+-    And la respuesta contiene un campo "id" de tipo número
++    And la respuesta contiene un campo "idCarrito" de tipo número
+     And la respuesta cumple con el contrato "cart-schema.json"
+     And se captura el ID del carrito para usar en próximas solicitudes
+ 
+diff --git a/src/test/resources/features/checkout.feature b/src/test/resources/features/checkout.feature
+index de8aaba..4794900 100644
+--- a/src/test/resources/features/checkout.feature
++++ b/src/test/resources/features/checkout.feature
+@@ -13,7 +13,7 @@ Feature: Flujo Completo de Checkout con Tarjeta de Crédito
+     Given el usuario obtiene un nuevo carrito de compras
+     When realiza una solicitud GET a "/cart"
+     Then la respuesta debe tener código de estado 200
+-    And la respuesta contiene un campo "id" de tipo número
++    And la respuesta contiene un campo "idCarrito" de tipo número
+     And la respuesta cumple con el contrato "cart-schema.json"
+     And se captura el ID del carrito para usar en próximas solicitudes
+ 
+diff --git a/src/test/resources/schemas/cart-schema.json b/src/test/resources/schemas/cart-schema.json
+index 030fd90..0df5483 100644
+--- a/src/test/resources/schemas/cart-schema.json
++++ b/src/test/resources/schemas/cart-schema.json
+@@ -2,7 +2,7 @@
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "title": "Cart Schema - Broadleaf Commerce",
+   "type": "object",
+-  "required": ["id", "status", "itemCount", "customer"],
++  "required": ["idCarrito", "status", "itemCount", "customer"],
+   "properties": {
+     "id": { "type": "integer" },
+     "orderNumber": { "type": ["string", "null"] },
+
+
+
+
+C:\Users\juanf\.jdks\ms-17.0.19\bin\java.exe -javaagent:C:\Users\juanf\AppData\Roaming\JetBrains\IntelliJIdea2026.1\plugins\java\lib\rt\debugger-agent.jar=file:///C:/Users/juanf/AppData/Local/Temp/capture723754408320421173.props -ea -Dbase.url -javaagent:C:\Users\juanf\.m2\repository/org/aspectj/aspectjweaver/1.9.22.1/aspectjweaver-1.9.22.1.jar -Didea.test.cyclic.buffer.size=1048576 "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2026.1\lib\idea_rt.jar=62618" -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Ddebugger.async.stack.trace.for.all.threads=true -Dfile.encoding=UTF-8 -classpath "C:\Program Files\JetBrains\IntelliJ IDEA 2026.1\lib\idea_rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2026.1\plugins\junit\lib\junit5-rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2026.1\plugins\junit\lib\junit-rt.jar;C:\software\projects\TESIS_QA\AutomationFramework\broadleaf-api-test\target\test-classes;C:\software\projects\TESIS_QA\AutomationFramework\broadleaf-api-test\target\classes;C:\Users\juanf\.m2\repository\io\rest-assured\rest-assured\5.4.0\rest-assured-5.4.0.jar;C:\Users\juanf\.m2\repository\org\apache\groovy\groovy\4.0.16\groovy-4.0.16.jar;C:\Users\juanf\.m2\repository\org\apache\groovy\groovy-xml\4.0.16\groovy-xml-4.0.16.jar;C:\Users\juanf\.m2\repository\org\apache\httpcomponents\httpclient\4.5.13\httpclient-4.5.13.jar;C:\Users\juanf\.m2\repository\org\apache\httpcomponents\httpcore\4.4.13\httpcore-4.4.13.jar;C:\Users\juanf\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\juanf\.m2\repository\commons-codec\commons-codec\1.11\commons-codec-1.11.jar;C:\Users\juanf\.m2\repository\org\apache\httpcomponents\httpmime\4.5.13\httpmime-4.5.13.jar;C:\Users\juanf\.m2\repository\org\ccil\cowan\tagsoup\tagsoup\1.2.1\tagsoup-1.2.1.jar;C:\Users\juanf\.m2\repository\io\rest-assured\json-path\5.4.0\json-path-5.4.0.jar;C:\Users\juanf\.m2\repository\org\apache\groovy\groovy-json\4.0.16\groovy-json-4.0.16.jar;C:\Users\juanf\.m2\repository\io\rest-assured\rest-assured-common\5.4.0\rest-assured-common-5.4.0.jar;C:\Users\juanf\.m2\repository\io\rest-assured\xml-path\5.4.0\xml-path-5.4.0.jar;C:\Users\juanf\.m2\repository\io\rest-assured\json-schema-validator\5.4.0\json-schema-validator-5.4.0.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\json-schema-validator\2.2.14\json-schema-validator-2.2.14.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\jackson-coreutils-equivalence\1.0\jackson-coreutils-equivalence-1.0.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\jackson-coreutils\2.0\jackson-coreutils-2.0.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\msg-simple\1.2\msg-simple-1.2.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\btf\1.3\btf-1.3.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\json-schema-core\1.2.14\json-schema-core-1.2.14.jar;C:\Users\juanf\.m2\repository\com\github\java-json-tools\uri-template\0.10\uri-template-0.10.jar;C:\Users\juanf\.m2\repository\org\mozilla\rhino\1.7.7.2\rhino-1.7.7.2.jar;C:\Users\juanf\.m2\repository\com\sun\mail\mailapi\1.6.2\mailapi-1.6.2.jar;C:\Users\juanf\.m2\repository\joda-time\joda-time\2.10.5\joda-time-2.10.5.jar;C:\Users\juanf\.m2\repository\com\googlecode\libphonenumber\libphonenumber\8.11.1\libphonenumber-8.11.1.jar;C:\Users\juanf\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\juanf\.m2\repository\net\sf\jopt-simple\jopt-simple\5.0.4\jopt-simple-5.0.4.jar;C:\Users\juanf\.m2\repository\com\google\guava\guava\32.0.1-jre\guava-32.0.1-jre.jar;C:\Users\juanf\.m2\repository\com\google\guava\failureaccess\1.0.1\failureaccess-1.0.1.jar;C:\Users\juanf\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\juanf\.m2\repository\org\checkerframework\checker-qual\3.33.0\checker-qual-3.33.0.jar;C:\Users\juanf\.m2\repository\com\google\errorprone\error_prone_annotations\2.18.0\error_prone_annotations-2.18.0.jar;C:\Users\juanf\.m2\repository\com\google\j2objc\j2objc-annotations\2.8\j2objc-annotations-2.8.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-java\7.15.0\cucumber-java-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-core\7.15.0\cucumber-core-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-gherkin\7.15.0\cucumber-gherkin-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-gherkin-messages\7.15.0\cucumber-gherkin-messages-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\messages\22.0.0\messages-22.0.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\tag-expressions\6.0.0\tag-expressions-6.0.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-expressions\17.0.1\cucumber-expressions-17.0.1.jar;C:\Users\juanf\.m2\repository\io\cucumber\datatable\7.15.0\datatable-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-plugin\7.15.0\cucumber-plugin-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\docstring\7.15.0\docstring-7.15.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\html-formatter\20.4.0\html-formatter-20.4.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\junit-xml-formatter\0.2.0\junit-xml-formatter-0.2.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\ci-environment\10.0.0\ci-environment-10.0.0.jar;C:\Users\juanf\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\juanf\.m2\repository\io\cucumber\cucumber-junit-platform-engine\7.15.0\cucumber-junit-platform-engine-7.15.0.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-engine\1.10.1\junit-platform-engine-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-suite\1.10.1\junit-platform-suite-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-suite-api\1.10.1\junit-platform-suite-api-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-suite-engine\1.10.1\junit-platform-suite-engine-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-suite-commons\1.10.1\junit-platform-suite-commons-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.1\junit-platform-launcher-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.1\junit-jupiter-api-5.10.1.jar;C:\Users\juanf\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\juanf\.m2\repository\org\junit\platform\junit-platform-commons\1.10.1\junit-platform-commons-1.10.1.jar;C:\Users\juanf\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.1\junit-jupiter-engine-5.10.1.jar;C:\Users\juanf\.m2\repository\io\qameta\allure\allure-cucumber7-jvm\2.25.0\allure-cucumber7-jvm-2.25.0.jar;C:\Users\juanf\.m2\repository\io\qameta\allure\allure-java-commons\2.25.0\allure-java-commons-2.25.0.jar;C:\Users\juanf\.m2\repository\io\qameta\allure\allure-model\2.25.0\allure-model-2.25.0.jar;C:\Users\juanf\.m2\repository\io\cucumber\gherkin\26.2.0\gherkin-26.2.0.jar;C:\Users\juanf\.m2\repository\com\github\javafaker\javafaker\1.0.2\javafaker-1.0.2.jar;C:\Users\juanf\.m2\repository\org\apache\commons\commons-lang3\3.5\commons-lang3-3.5.jar;C:\Users\juanf\.m2\repository\org\yaml\snakeyaml\1.23\snakeyaml-1.23-android.jar;C:\Users\juanf\.m2\repository\com\github\mifmif\generex\1.0.2\generex-1.0.2.jar;C:\Users\juanf\.m2\repository\dk\brics\automaton\automaton\1.11-8\automaton-1.11-8.jar;C:\Users\juanf\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar;C:\Users\juanf\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.16.1\jackson-databind-2.16.1.jar;C:\Users\juanf\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.16.1\jackson-annotations-2.16.1.jar;C:\Users\juanf\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.16.1\jackson-core-2.16.1.jar;C:\Users\juanf\.m2\repository\org\slf4j\slf4j-simple\2.0.9\slf4j-simple-2.0.9.jar;C:\Users\juanf\.m2\repository\org\slf4j\slf4j-api\2.0.9\slf4j-api-2.0.9.jar;C:\Users\juanf\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar" com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 com.tesis.automation.runners.RunCucumberTest
+
+Scenario: Creación de un carrito nuevo                                     # features/cart.feature:7
+20:46:22.402 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:22.406 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+20:46:22.406 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1" # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                      # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+20:46:23.499 [main] INFO com.tesis.automation.clients.BaseApiClient - SUT base URL = https://localhost:7445/api/v1
+20:46:23.503 [main] INFO com.tesis.automation.clients.CartApiClient - Creating new cart...
+20:46:23.503 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//cart
+20:46:25.826 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 658
+Carrito creado con ID: 5
+  Given el usuario obtiene un nuevo carrito de compras                     # com.tesis.automation.steps.CartSteps.userGetsNewCart()
+  Then la respuesta debe tener código de estado 200                        # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la respuesta contiene un campo "idCarrito" de tipo número            # com.tesis.automation.steps.CommonSteps.validateFieldIsNumber(java.lang.String)
+Validacion de contrato exitosa: cart-schema.json
+  And la respuesta cumple con el contrato "cart-schema.json"               # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+Cart ID capturado: 5
+  And se captura el ID del carrito para usar en próximas solicitudes       # com.tesis.automation.steps.CartSteps.captureCartId()
+20:46:28.508 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:28.508 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+20:46:28.510 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Scenario: Agregar un producto al carrito                                   # features/cart.feature:14
+20:46:28.675 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:28.676 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+20:46:28.676 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1" # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                      # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+20:46:28.682 [main] INFO com.tesis.automation.clients.CartApiClient - Creating new cart...
+20:46:28.682 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//cart
+20:46:28.802 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 658
+Carrito creado con ID: 6
+  Given el usuario obtiene un nuevo carrito de compras                     # com.tesis.automation.steps.CartSteps.userGetsNewCart()
+20:46:28.833 [main] INFO com.tesis.automation.clients.CatalogApiClient - Searching products with term: hot
+20:46:28.835 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//catalog/search?q=hot
+20:46:29.035 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 21765
+Producto encontrado con SKU: 13
+  And el usuario busca un producto con término "hot"                       # com.tesis.automation.steps.CatalogSteps.userSearchesProduct(java.lang.String)
+20:46:29.372 [main] INFO com.tesis.automation.clients.CartApiClient - Adding item to cart: 6
+20:46:29.372 [main] INFO com.tesis.automation.clients.BaseApiClient - POST https://localhost:7445/api/v1//cart/6/item
+20:46:29.772 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 3545
+Item agregado. Fulfillment Group: 1
+  When el usuario agrega 1 unidad del SKU al carrito                       # com.tesis.automation.steps.CartSteps.userAddsItemToCart(int)
+  Then la respuesta debe tener código de estado 200                        # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And el campo "itemCount" debe ser igual a 1                              # com.tesis.automation.steps.CommonSteps.fieldEqualsInt(java.lang.String,int)
+Validacion de contrato exitosa: cart-schema.json
+  And la respuesta cumple con el contrato "cart-schema.json"               # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+20:46:29.851 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:29.851 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+20:46:29.851 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Scenario: Error al agregar un producto con SKU inválido                      # features/cart.feature:22
+20:46:29.874 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:29.875 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+20:46:29.875 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1"   # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                        # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+20:46:29.877 [main] INFO com.tesis.automation.clients.CartApiClient - Creating new cart...
+20:46:29.878 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//cart
+20:46:29.947 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 658
+Carrito creado con ID: 7
+  Given el usuario obtiene un nuevo carrito de compras                       # com.tesis.automation.steps.CartSteps.userGetsNewCart()
+  And el usuario intenta agregar un producto inválido                        # com.tesis.automation.steps.CheckoutSteps.userTriesToAddInvalidProduct()
+  When realiza una solicitud POST a "/cart/{cartId}/item" con skuId inválido # com.tesis.automation.steps.CommonSteps.postWithInvalidSku(java.lang.String)
+  Then la respuesta debe tener código de estado 400 o 404                    # com.tesis.automation.steps.CommonSteps.validateStatusCodeOr(int,int)
+  And la respuesta contiene un messageKey describiendo el error              # com.tesis.automation.steps.CommonSteps.validateMessageKey()
+20:46:30.118 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:30.119 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+20:46:30.119 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Scenario: Cliente realiza una compra exitosa (Happy Path)                           # features/checkout.feature:10
+20:46:30.162 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:30.162 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+20:46:30.162 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1"          # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                               # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+20:46:30.165 [main] INFO com.tesis.automation.clients.CartApiClient - Creating new cart...
+20:46:30.165 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//cart
+20:46:30.246 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 658
+Carrito creado con ID: 8
+  Given el usuario obtiene un nuevo carrito de compras                              # com.tesis.automation.steps.CartSteps.userGetsNewCart()
+  When realiza una solicitud GET a "/cart"                                          # com.tesis.automation.steps.CommonSteps.decorativeGet(java.lang.String)
+  Then la respuesta debe tener código de estado 200                                 # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la respuesta contiene un campo "idCarrito" de tipo número                     # com.tesis.automation.steps.CommonSteps.validateFieldIsNumber(java.lang.String)
+Validacion de contrato exitosa: cart-schema.json
+  And la respuesta cumple con el contrato "cart-schema.json"                        # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+Cart ID capturado: 8
+  And se captura el ID del carrito para usar en próximas solicitudes                # com.tesis.automation.steps.CartSteps.captureCartId()
+20:46:30.332 [main] INFO com.tesis.automation.clients.CatalogApiClient - Searching products with term: hot
+20:46:30.332 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//catalog/search?q=hot
+20:46:30.507 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 21765
+Producto encontrado con SKU: 13
+  When el usuario busca un producto con término "hot"                               # com.tesis.automation.steps.CatalogSteps.userSearchesProduct(java.lang.String)
+  And realiza una solicitud GET a "/catalog/search?q=hot"                           # com.tesis.automation.steps.CommonSteps.decorativeGet(java.lang.String)
+  Then la respuesta debe tener código de estado 200                                 # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la respuesta contiene al menos un producto                                    # com.tesis.automation.steps.CommonSteps.validateHasProducts()
+SKU ID capturado: 13
+  And se captura el primer SKU ID encontrado                                        # com.tesis.automation.steps.CatalogSteps.captureSkuId()
+20:46:30.629 [main] INFO com.tesis.automation.clients.CartApiClient - Adding item to cart: 8
+20:46:30.629 [main] INFO com.tesis.automation.clients.BaseApiClient - POST https://localhost:7445/api/v1//cart/8/item
+20:46:30.885 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 3545
+Item agregado. Fulfillment Group: 2
+  When el usuario agrega 1 unidad del SKU al carrito                                # com.tesis.automation.steps.CartSteps.userAddsItemToCart(int)
+  And realiza una solicitud POST a "/cart/{cartId}/item"                            # com.tesis.automation.steps.CommonSteps.decorativePost(java.lang.String)
+  Then la respuesta debe tener código de estado 200                                 # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And el campo "itemCount" debe ser igual a 1                                       # com.tesis.automation.steps.CommonSteps.fieldEqualsInt(java.lang.String,int)
+Fulfillment Group ID capturado: 2
+  And se captura el "fulfillmentGroups[0].id"                                       # com.tesis.automation.steps.CartSteps.captureJsonPath(java.lang.String)
+Validacion de contrato exitosa: cart-schema.json
+  And la respuesta cumple con el contrato "cart-schema.json"                        # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+20:46:31.141 [main] INFO com.tesis.automation.clients.CartApiClient - Setting shipping address for cart: 8 / fg: 2
+20:46:31.141 [main] INFO com.tesis.automation.clients.BaseApiClient - PUT https://localhost:7445/api/v1//shipping/8/2/address
+20:46:31.558 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 2018
+Direccion de envio configurada
+  When el usuario configura la dirección de envío                                   # com.tesis.automation.steps.CheckoutSteps.userConfiguresShippingAddress()
+  And realiza una solicitud PUT a "/shipping/{cartId}/{fulfillmentGroupId}/address" # com.tesis.automation.steps.CommonSteps.decorativePut(java.lang.String)
+  Then la respuesta debe tener código de estado 200                                 # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la dirección quedó registrada correctamente                                   # com.tesis.automation.steps.CheckoutSteps.validateShippingAddressSet()
+20:46:31.589 [main] INFO com.tesis.automation.clients.CheckoutApiClient - Adding payment to order for cart: 8
+20:46:31.589 [main] INFO com.tesis.automation.clients.BaseApiClient - POST https://localhost:7445/api/v1//cart/checkout/payment?cartId=8
+20:46:31.755 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 953
+Informacion de pago agregada
+  When el usuario agrega información de pago con tarjeta de crédito                 # com.tesis.automation.steps.PaymentSteps.userAddsCardPayment()
+  And incluye billingAddress                                                        # com.tesis.automation.steps.PaymentSteps.includesBillingAddress()
+  And incluye transacción con tipo "AUTHORIZE_AND_CAPTURE"                          # com.tesis.automation.steps.PaymentSteps.includesTransactionType(java.lang.String)
+  And realiza una solicitud POST a "/cart/checkout/payment?cartId={cartId}"         # com.tesis.automation.steps.CommonSteps.decorativePost(java.lang.String)
+  Then la respuesta debe tener código de estado 200                                 # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And el campo "transactions[0].success" debe ser true                              # com.tesis.automation.steps.CommonSteps.fieldIsTrue(java.lang.String)
+  And el campo "transactions[0].amount" debe ser 3.99                               # com.tesis.automation.steps.CommonSteps.fieldEqualsDouble(java.lang.String,double)
+Validacion de contrato exitosa: order-payment-schema.json
+  And la respuesta cumple con el contrato "order-payment-schema.json"               # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+20:46:31.815 [main] INFO com.tesis.automation.clients.CartApiClient - Performing checkout for cart: 8
+20:46:31.815 [main] INFO com.tesis.automation.clients.BaseApiClient - POST https://localhost:7445/api/v1//cart/checkout?cartId=8
+Checkout completado
+20:46:31.946 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 4958
+  When el usuario realiza el checkout final                                         # com.tesis.automation.steps.CheckoutSteps.userPerformsCheckout()
+  And realiza una solicitud POST a "/cart/checkout?cartId={cartId}"                 # com.tesis.automation.steps.CommonSteps.decorativePost(java.lang.String)
+  Then la respuesta debe tener código de estado 200 o 201                           # com.tesis.automation.steps.CommonSteps.validateStatusCodeOr(int,int)
+  And el campo "status" debe ser "SUBMITTED"                                        # com.tesis.automation.steps.CommonSteps.fieldEqualsString(java.lang.String,java.lang.String)
+  And el campo "orderNumber" no debe ser nulo                                       # com.tesis.automation.steps.CommonSteps.fieldIsNotNull(java.lang.String)
+  And la orden ha sido procesada exitosamente                                       # com.tesis.automation.steps.CheckoutSteps.validateOrderProcessed()
+Validacion de contrato exitosa: checkout-schema.json
+  And la respuesta cumple con el contrato "checkout-schema.json"                    # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+20:46:32.147 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:32.148 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+20:46:32.148 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Scenario: Búsqueda de productos devuelve resultados                        # features/product-catalog.feature:7
+20:46:32.167 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:32.167 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+20:46:32.167 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1" # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                      # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+20:46:32.169 [main] INFO com.tesis.automation.clients.CatalogApiClient - Searching products with term: hot
+20:46:32.169 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//catalog/search?q=hot
+20:46:32.300 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 21765
+Producto encontrado con SKU: 13
+  When el usuario busca un producto con término "hot"                      # com.tesis.automation.steps.CatalogSteps.userSearchesProduct(java.lang.String)
+  Then la respuesta debe tener código de estado 200                        # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la respuesta contiene al menos un producto                           # com.tesis.automation.steps.CommonSteps.validateHasProducts()
+SKU ID capturado: 13
+  And se captura el primer SKU ID encontrado                               # com.tesis.automation.steps.CatalogSteps.captureSkuId()
+20:46:32.385 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:32.385 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+20:46:32.385 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Scenario: Contrato del catálogo de productos es válido                            # features/product-catalog.feature:13
+20:46:32.402 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:32.402 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+20:46:32.402 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1"        # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                             # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+  Given el usuario realiza una solicitud GET a "/catalog/search?q=hot"            # com.tesis.automation.steps.CommonSteps.userPerformsGet(java.lang.String)
+  Then la respuesta debe tener código de estado 200                               # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la respuesta debe ser válida según el esquema "product-catalog-schema.json" # com.tesis.automation.steps.CommonSteps.validateSchema(java.lang.String)
+  And cada producto en la lista debe tener los campos obligatorios:               # com.tesis.automation.steps.CommonSteps.validateProductFields(io.cucumber.datatable.DataTable)
+    | id         |
+    | name       |
+    | defaultSku |
+20:46:33.450 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+20:46:33.451 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+20:46:33.451 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Process finished with exit code 0
+
