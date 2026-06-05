@@ -1,0 +1,42 @@
+{
+  "id": 6,
+  "orderNumber": null,
+  "emailAddress": null,
+  "status": "IN_PROCESS",
+  "submitDate": null,
+  "totalTax": null,
+  "totalShipping": null,
+  "itemAdjustmentsValue": {
+    "amount": 0.00,
+    "currency": "USD"
+  },
+  "fulfillmentGroupAdjustmentsValue": {
+    "amount": 0.00,
+    "currency": "USD"
+  },
+  "orderAdjustmentsValue": {
+    "amount": 0.00,
+    "currency": "USD"
+  },
+  "totalAdjustmentsValue": {
+    "amount": 0.00,
+    "currency": "USD"
+  },
+  "subTotal": null,
+  "total": null,
+  "itemCount": 0,
+  "cliente": {
+    "id": 117,
+    "firstName": null,
+    "lastName": null,
+    "emailAddress": null,
+    "registered": false,
+    "customerAttributes": null
+  },
+  "orderItems": null,
+  "fulfillmentGroups": null,
+  "payments": null,
+  "orderAdjustments": null,
+  "orderAttributes": null,
+  "cartMessages": null
+}
