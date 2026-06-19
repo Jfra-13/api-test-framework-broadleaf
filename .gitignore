@@ -43,5 +43,8 @@ build/
 ### Mac OS ###
 .DS_Store
 
+### Tooling cache (skill registry, agent state) ###
+.atl/
+
 
 /docs

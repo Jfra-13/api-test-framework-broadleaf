@@ -1,0 +1,213 @@
+=====================================================================
+CONTEXTO DE TRABAJO — FRAMEWORK DE PRUEBAS API (TESIS USIL)
+Handoff para sesión en CLI sobre el repositorio del framework
+=====================================================================
+
+------------------------------------------------------------
+1. QUÉ ES ESTE PROYECTO
+------------------------------------------------------------
+Este repositorio es el FRAMEWORK DE PRUEBAS de servicios (API REST) que
+sustenta una tesis de Ingeniería de Software. El framework está estructurado
+en capas desacopladas:
+  - features/  -> escenarios de negocio en Gherkin (Cucumber)
+  - steps/     -> traducen los escenarios (Step Definitions)
+  - clients/   -> patrón API Client sobre RestAssured (BaseApiClient) = transporte
+  - dto/       -> modelos de datos (Lombok)
+  - schemas/   -> validación de contrato con JSON Schema (cart-schema.json, etc.)
+  - runner     -> RunCucumberTest ; reporte con Allure ; CI en GitHub Actions
+El Sistema Bajo Prueba (SUT) es Broadleaf Commerce (módulo api, Spring Boot),
+que corre localmente y expone una API REST.
+
+------------------------------------------------------------
+2. QUÉ QUEREMOS LOGRAR EN ESTA SESIÓN
+------------------------------------------------------------
+El documento de tesis tiene VALORES PENDIENTES (marcados con tokens entre
+corchetes, p. ej. [CHURN_M2_LIN], [MI_VALOR], [TASA_DETECCION_GLOBAL]). Son
+resultados experimentales que aún NO se han generado. El objetivo de esta
+sesión es EJECUTAR el experimento sobre este repo y producir esos valores +
+su evidencia (diffs y estados rojo/verde), para completar el documento al 100%.
+
+IMPORTANTE: la CLI produce DATOS (números + evidencia). NO redacta la tesis.
+Los valores se llevan de vuelta al chat académico para integrarlos en la prosa,
+tablas y citas (APA). No hace falta editar el .docx/.pdf de la tesis aquí.
+
+------------------------------------------------------------
+3. QUÉ MIDE LA INVESTIGACIÓN (PARA ENTENDER EL PORQUÉ)
+------------------------------------------------------------
+Dos constructos, operacionalizados así:
+  VD1 Mantenibilidad:
+     - Code Churn = líneas/archivos modificados al adaptar la prueba a una
+       ruptura, y su % sobre el total del framework. Se mide con git diff --stat.
+       (Menor churn => menor costo de mantenimiento => mejor.)
+     - Índice de Mantenibilidad (MI), escala 0-100 (MetricsReloaded en IntelliJ).
+  VD2 Resiliencia:
+     - Tasa de detección de rupturas de contrato (% de rupturas que la suite
+       marca en ROJO).
+     - Falsos negativos (rupturas que pasan inadvertidas).
+  Verificación transversal: si la ruptura se absorbe SIN alterar el flujo de
+  negocio en Gherkin (los .feature).
+
+La tesis NO busca "ahorro de tiempo manual vs automático". Eso está fuera de
+alcance. No conviertas nada en un tutorial de instalación/configuración de
+herramientas: el foco es el VALOR ARQUITECTÓNICO y el IMPACTO EN ESAS VARIABLES.
+
+------------------------------------------------------------
+4. ESTADO ACTUAL
+------------------------------------------------------------
+YA HECHO Y MEDIDO (no rehacer):
+  - Renombrado de campo customer -> cliente : 1 archivo, 1 línea (~0,05%),
+    detectado por JSON Schema, Gherkin intacto.
+  - Renombrado de campo id -> idCarrito : 4 archivos, 5 líneas (~0,23%),
+    detectado, solo se actualizaron tokens del nombre en aserciones.
+PENDIENTE (esta sesión):
+  - Mutación 2 (cambio de tipo de dato)        -> Tarea A
+  - Mutación 3 (eliminación de llave requerida) -> Tarea B
+  - Control negativo (refactor interno)         -> Tarea C
+  - Índice de Mantenibilidad                    -> Tarea D
+  - Agregados (tasa de detección + FN total)    -> Tarea E
+  - [OPCIONAL/RECOMENDADO] Mutación semántica   -> Sección 9
+
+------------------------------------------------------------
+5. REGLAS CRÍTICAS (NO ROMPER)
+------------------------------------------------------------
+  R1. Cada mutación parte de repo LIMPIO (git status limpio) y al terminar se
+      RESETEA (git checkout -- .). Las mediciones deben quedar aisladas entre sí.
+  R2. Al adaptar la prueba para volver a VERDE, modifica SOLO capas técnicas:
+      schemas/, dto/, clients/ y, como máximo, tokens literales del nombre del
+      campo en las aserciones de steps/. NUNCA toques el flujo de negocio de los
+      .feature (Dado/Cuando). Esto es central para la hipótesis HE3.
+  R3. Como medimos churn, cada línea cuenta: haz el cambio MÍNIMO necesario para
+      pasar de rojo a verde. Nada de refactors oportunistas ni formateos masivos.
+  R4. Prueba que los features quedaron intactos con: git diff -- '*.feature'
+      (resultado esperado normalmente: sin cambios).
+  R5. La inyección de rupturas se hace en el SUT vía el filtro de Spring
+      Oe4CartContractMutationFilter, activable por configuración. No alteres la
+      lógica de negocio real del SUT salvo el control negativo (ver Tarea C).
+
+------------------------------------------------------------
+6. PRERREQUISITO — AMPLIAR EL FILTRO
+------------------------------------------------------------
+Localiza Oe4CartContractMutationFilter y amplíalo para que, además del
+renombrado ya soportado, permita ACTIVAR POR CONFIGURACIÓN (propiedad/enum,
+una mutación a la vez, fácil de prender/apagar y resetear):
+  (a) Cambio de tipo de dato de un campo de la respuesta JSON.
+  (b) Eliminación de una llave requerida del JSON.
+  (c) [Opcional, ver Sección 9] Modo semántico: respuesta estructuralmente
+      VÁLIDA pero con un VALOR incorrecto.
+Sin (a) y (b) no se pueden generar las Mutaciones 2 y 3.
+
+------------------------------------------------------------
+7. PROTOCOLO POR MUTACIÓN (CICLO)
+------------------------------------------------------------
+  1) git status  (confirmar repo limpio)
+  2) Activar la mutación en el filtro y reiniciar Broadleaf (módulo api)
+  3) Ejecutar la suite (RunCucumberTest). Capturar resultado.
+        -> Si la ruptura ROMPE el contrato, debe quedar en ROJO (detectada).
+  4) Adaptar SOLO la capa técnica (schema/dto/client) hasta volver a VERDE (R2/R3).
+  5) Medir churn:  git --no-pager diff --stat   (archivos y líneas) y  git diff
+  6) Registrar evidencia: salida en rojo, salida en verde, y el diff.
+  7) Resetear:  git checkout -- .
+NOTA: pasos 2 y 3 requieren el SUT corriendo. Si no puedes reiniciar Broadleaf
+o ejecutar la suite de forma autónoma, indícame los comandos exactos a correr y
+qué salida necesitas que te pegue.
+
+------------------------------------------------------------
+8. TAREAS Y VALORES A PRODUCIR
+------------------------------------------------------------
+Fórmula de % de churn:   CHURN_% = (líneas_modificadas / 2187) * 100
+Regla de falso negativo: FN = 0 si la ruptura fue detectada ; 1 si pasó inadvertida.
+
+TAREA A — Mutación 2: cambio de tipo de dato
+  Produce: [CHURN_M2_ARCH]=archivos ; [CHURN_M2_LIN]=líneas ; [CHURN_M2_%] ;
+           [DETECCION_M2]=Sí/No (esperado Sí) ; [FN_M2] (esperado 0) ;
+           [M2_GHERKIN]=¿se tocó algún .feature? (esperado No)
+
+TAREA B — Mutación 3: eliminación de llave requerida
+  Produce: [CHURN_M3_ARCH] ; [CHURN_M3_LIN] ; [CHURN_M3_%] ;
+           [DETECCION_M3]=Sí/No (esperado Sí; quitar llave requerida rompe el schema) ;
+           [FN_M3] (esperado 0) ; [M3_GHERKIN] (esperado No)
+
+TAREA C — Control negativo: refactor interno SIN cambio de contrato
+  Renombra una variable INTERNA del controlador (no toca el JSON de salida),
+  reinicia y corre la suite. NO debe requerir cambios ni fallar.
+  Produce: [CTRL_ARCH] (esperado 0) ; [CTRL_LIN] (esperado 0) ;
+           [CTRL_%] (esperado 0,00%).  (Demuestra especificidad: sin falsos positivos.)
+
+TAREA D — Índice de Mantenibilidad  (PASO MANUAL EN INTELLIJ, no headless)
+  En IntelliJ: Analyze -> Calculate Metrics -> seleccionar el módulo/paquete de
+  pruebas -> métrica Maintainability Index -> tomar el valor del paquete raíz
+  (o el promedio).
+  Produce: [MI_VALOR] (número 0-100) y, MUY IMPORTANTE, declara la VARIANTE/FÓRMULA
+  exacta de MI que reporta el plugin (la tesis dice "clásica": confírmalo).
+
+TAREA E — Agregados (se calculan al terminar A-C; no se miden)
+  Rupturas que ROMPEN el contrato (base, sin semántica) = 4:
+     renombrado customer->cliente, renombrado id->idCarrito, M2, M3.
+     (El control negativo NO cuenta como ruptura.)
+  [TASA_DETECCION_GLOBAL] = (detectadas / 4) * 100   (esperado 100% si las 4 caen)
+  [FN_TOTAL] = 0 + 0 + [FN_M2] + [FN_M3]             (esperado 0)
+
+------------------------------------------------------------
+9. (OPCIONAL / RECOMENDADO) MUTACIÓN SEMÁNTICA — ROBUSTEZ
+------------------------------------------------------------
+Motivo: las 4 rupturas anteriores son justo las que JSON Schema está diseñado
+para atrapar => tasa de detección 100% y FN=0 "por construcción", lo que resta
+poder a la variable de resiliencia. Una mutación semántica mapea el LÍMITE del
+esquema de forma honesta.
+
+Diseño (modo (c) del filtro): devolver un JSON ESTRUCTURALMENTE VÁLIDO pero con
+un VALOR mentiroso, p. ej.:
+   - itemCount que NO coincide con el número real de ítems del carrito, o
+   - un total que NO suma los ítems, o
+   - status = "SUBMITTED" sin que la orden se haya enviado.
+Comportamiento esperado: el JSON Schema PASA (verde) => FALSO NEGATIVO real.
+
+Produce:
+   [DETECCION_SEM] (esperado: No, schema-only)
+   [FN_SEM]        (esperado: 1)
+   Opcional pero valioso: agrega UNA aserción de valor/negocio que sí lo cace
+   (p. ej. assert total == suma de ítems) y mide su churn como "costo de mitigación".
+
+Si incluyes la semántica, RECALCULA los agregados de la Tarea E así:
+   Rupturas que rompen el contrato = 5 (las 4 + semántica)
+   [TASA_DETECCION_GLOBAL] schema-only = (4 / 5) * 100 = 80%
+   [FN_TOTAL] = [FN_M2] + [FN_M3] + [FN_SEM]  (esperado 1)
+   (Si añades la aserción de valor, reporta además detección post-mitigación 5/5.)
+Avísame en el resultado si la incluiste, porque cambia la conclusión de resiliencia
+y agrega filas a las Tablas 4 y 5 de la tesis.
+
+------------------------------------------------------------
+10. VERIFICACIONES METODOLÓGICAS QUE EL JURADO PUEDE PEDIR
+------------------------------------------------------------
+  V1. DENOMINADOR 2187: confirma de dónde sale (¿LOC de qué archivos del código
+      de prueba? ¿medido con qué herramienta?). Reporta el método y el número
+      verificado. Si difiere de 2187, indícalo.
+  V2. VARIANTE DE MI: declara la fórmula exacta (ver Tarea D).
+
+------------------------------------------------------------
+11. ENTREGABLE QUE ESPERO DE LA CLI
+------------------------------------------------------------
+Un bloque de RESULTADOS que mapee cada token a su valor + ruta de la evidencia,
+listo para pegar de vuelta en el chat académico. Formato sugerido:
+
+  [CHURN_M2_ARCH] = ...        evidencia: <ruta/captura/diff>
+  [CHURN_M2_LIN]  = ...
+  [CHURN_M2_%]    = ...
+  [DETECCION_M2]  = Sí/No
+  [FN_M2]         = ...
+  [M2_GHERKIN]    = No
+  ... (M3, CTRL, MI, agregados, y SEM si aplica) ...
+  Notas: variante de MI = ... ; denominador verificado = ... ; semántica incluida = Sí/No
+
+------------------------------------------------------------
+12. MAPA DE DÓNDE VIVE CADA TOKEN EN LA TESIS (referencia)
+------------------------------------------------------------
+  [MI_VALOR]                -> Resumen, Abstract, Tabla 1, §7.1.2 (5 lugares)
+  [TASA_DETECCION_GLOBAL]   -> Resumen, Abstract, Tabla 1, §7.1.3 (4 lugares)
+  [FN_TOTAL]                -> Tabla 1, §7.1.3 (2 lugares)
+  M2 (churn + detección)    -> Tabla 4 y Tabla 5
+  M3 (churn + detección)    -> Tabla 4 y Tabla 5
+  CTRL (churn)              -> Tabla 4
+=====================================================================
+FIN DEL CONTEXTO
+=====================================================================
