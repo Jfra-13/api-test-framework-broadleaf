@@ -8,6 +8,7 @@ Feature: Gestión del Carrito de Compras
     Given el usuario obtiene un nuevo carrito de compras
     Then la respuesta debe tener código de estado 200
     And la respuesta contiene un campo "id" de tipo número
+    And el campo "itemCount" debe ser igual a 0
     And la respuesta cumple con el contrato "cart-schema.json"
     And se captura el ID del carrito para usar en próximas solicitudes
 

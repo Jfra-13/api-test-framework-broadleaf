@@ -1,0 +1,157 @@
+Mi-tesis,mar, 16 jun. 2026 00:54:22 PET
+Method,CogC,ev(G),iv(G),LOC,V,v(G)
+com.tesis.automation.clients.BaseApiClient.BaseApiClient(),1,1,2,13,66,2
+com.tesis.automation.clients.BaseApiClient.get(String),0,1,1,11,51,1
+"com.tesis.automation.clients.BaseApiClient.get(String, String, String)",0,1,1,12,76,1
+com.tesis.automation.clients.BaseApiClient.logResponse(Response),0,1,1,6,36,1
+"com.tesis.automation.clients.BaseApiClient.post(String, Object)",0,1,1,13,79,1
+"com.tesis.automation.clients.BaseApiClient.postWithQuery(String, String, String, Object)",1,1,2,14,150,2
+"com.tesis.automation.clients.BaseApiClient.put(String, Object)",0,1,1,13,79,1
+com.tesis.automation.clients.BaseApiClient.resolveBaseUrl(),4,1,4,20,118,5
+"com.tesis.automation.clients.CartApiClient.addItemToCart(String, Object)",0,1,1,11,55,1
+com.tesis.automation.clients.CartApiClient.getOrCreateCart(),0,1,1,10,31,1
+com.tesis.automation.clients.CartApiClient.performCheckout(String),0,1,1,10,50,1
+"com.tesis.automation.clients.CartApiClient.setShippingAddress(String, String, Object)",0,1,1,11,64,1
+com.tesis.automation.clients.CatalogApiClient.getCategories(),0,1,1,10,31,1
+com.tesis.automation.clients.CatalogApiClient.getProductDetails(String),0,1,1,11,50,1
+com.tesis.automation.clients.CatalogApiClient.searchProducts(String),0,1,1,10,44,1
+"com.tesis.automation.clients.CheckoutApiClient.addPaymentToOrder(String, Object)",0,1,1,10,50,1
+com.tesis.automation.clients.CheckoutApiClient.getOrderDetails(String),0,1,1,11,50,1
+com.tesis.automation.hooks.CommonHooks.setup(),0,1,1,8,33,1
+com.tesis.automation.hooks.CommonHooks.teardown(),0,1,1,8,35,1
+com.tesis.automation.steps.CartSteps.captureCartId(),0,1,1,8,73,1
+com.tesis.automation.steps.CartSteps.captureJsonPath(String),2,1,2,12,133,2
+com.tesis.automation.steps.CartSteps.fieldExistsInCart(String),0,1,1,5,43,1
+com.tesis.automation.steps.CartSteps.userAddsItemToCart(int),0,1,1,12,178,1
+com.tesis.automation.steps.CartSteps.userGetsNewCart(),0,1,1,10,115,1
+com.tesis.automation.steps.CartSteps.validateItemCount(int),0,1,1,5,48,1
+com.tesis.automation.steps.CatalogSteps.captureSkuId(),0,1,1,8,73,1
+com.tesis.automation.steps.CatalogSteps.userGetsProductDetails(String),0,1,1,5,28,1
+com.tesis.automation.steps.CatalogSteps.userSearchesProduct(String),0,1,1,10,161,1
+com.tesis.automation.steps.CatalogSteps.validateProductFound(int),0,1,1,5,58,1
+com.tesis.automation.steps.CheckoutSteps.userConfiguresShippingAddress(),0,1,1,11,122,1
+com.tesis.automation.steps.CheckoutSteps.userPerformsCheckout(),0,1,1,9,101,1
+com.tesis.automation.steps.CheckoutSteps.userTriesToAddInvalidProduct(),0,1,1,4,4,1
+com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(String),0,1,1,7,72,1
+com.tesis.automation.steps.CheckoutSteps.validateOrderNumber(),0,1,1,6,85,1
+com.tesis.automation.steps.CheckoutSteps.validateOrderProcessed(),0,1,1,5,43,1
+com.tesis.automation.steps.CheckoutSteps.validateOrderStatus(String),0,1,1,5,43,1
+com.tesis.automation.steps.CheckoutSteps.validateShippingAddressSet(),0,1,1,6,48,1
+com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(String),0,1,1,5,15,1
+com.tesis.automation.steps.CommonSteps.decorativeGet(String),0,1,1,2,4,1
+com.tesis.automation.steps.CommonSteps.decorativePost(String),0,1,1,2,4,1
+com.tesis.automation.steps.CommonSteps.decorativePut(String),0,1,1,2,4,1
+"com.tesis.automation.steps.CommonSteps.fieldEqualsDouble(String, double)",0,1,1,5,48,1
+"com.tesis.automation.steps.CommonSteps.fieldEqualsInt(String, int)",0,1,1,5,48,1
+"com.tesis.automation.steps.CommonSteps.fieldEqualsString(String, String)",0,1,1,5,43,1
+com.tesis.automation.steps.CommonSteps.fieldExists(String),0,1,1,5,43,1
+com.tesis.automation.steps.CommonSteps.fieldIsNotNull(String),0,1,1,5,43,1
+com.tesis.automation.steps.CommonSteps.fieldIsTrue(String),0,1,1,5,43,1
+com.tesis.automation.steps.CommonSteps.postWithInvalidSku(String),1,1,1,12,131,2
+com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid(),0,1,1,4,8,1
+com.tesis.automation.steps.CommonSteps.userPerformsGet(String),5,1,5,12,282,5
+com.tesis.automation.steps.CommonSteps.validateFieldIsNumber(String),0,1,1,5,43,1
+com.tesis.automation.steps.CommonSteps.validateHasProducts(),0,1,1,5,48,1
+com.tesis.automation.steps.CommonSteps.validateMessageKey(),1,1,5,11,180,5
+com.tesis.automation.steps.CommonSteps.validateProductFields(DataTable),3,1,3,13,216,3
+com.tesis.automation.steps.CommonSteps.validateSchema(String),0,1,1,6,48,1
+com.tesis.automation.steps.CommonSteps.validateStatusCode(int),0,1,1,5,38,1
+"com.tesis.automation.steps.CommonSteps.validateStatusCodeOr(int, int)",0,1,1,5,55,1
+com.tesis.automation.steps.PaymentSteps.includesBillingAddress(),0,1,1,2,4,1
+com.tesis.automation.steps.PaymentSteps.includesTransactionType(String),0,1,1,2,4,1
+com.tesis.automation.steps.PaymentSteps.userAddsCardPayment(),0,1,1,12,131,1
+com.tesis.automation.steps.PaymentSteps.validateTransactionAmount(double),0,1,1,5,48,1
+com.tesis.automation.steps.PaymentSteps.validateTransactionSuccess(),0,1,1,5,43,1
+com.tesis.automation.tests.Main.main(String[]),1,1,2,10,76,2
+com.tesis.automation.tests.catalog.CatalogSmokeTest.setup(),0,1,1,5,11,1
+com.tesis.automation.tests.catalog.CatalogSmokeTest.test_C1_SearchAndCaptureProduct(),0,1,1,14,114,1
+com.tesis.automation.tests.catalog.CatalogSmokeTest.test_C2_GetProductDetailsAndValidateSchema(),0,1,1,13,90,1
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.setup(),0,1,1,6,19,1
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_01_CreateCartAndStartSession(),0,1,1,14,108,1
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_02_FindProduct(),0,1,1,15,139,1
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_03_AddItemToCart(),0,1,1,24,283,1
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_04_ConfigureShipping(),0,1,1,27,203,1
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_04b_SelectShippingOption(),3,2,3,47,658,4
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_05_AddPayment(),2,1,3,54,548,3
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest.test_06_PerformCheckout(),0,1,1,17,188,1
+"com.tesis.automation.utils.DataGenerator.generateAddItemPayload(Long, int)",0,1,1,9,24,1
+com.tesis.automation.utils.DataGenerator.generateAddress(),0,1,1,17,152,1
+"com.tesis.automation.utils.DataGenerator.generateCreditCardPayment(Long, Double, Address)",0,1,1,26,301,1
+com.tesis.automation.utils.DataGenerator.generateEmail(),0,1,1,6,15,1
+com.tesis.automation.utils.DataGenerator.generateUsername(),0,1,1,6,15,1
+com.tesis.automation.utils.JsonSchemaValidator.JsonSchemaValidator(),0,1,1,1,0,1
+"com.tesis.automation.utils.JsonSchemaValidator.validate(Response, String)",0,1,1,4,38,1
+com.tesis.automation.utils.JsonSchemaValidator.validateCart(Response),0,1,1,3,15,1
+com.tesis.automation.utils.JsonSchemaValidator.validateCheckout(Response),0,1,1,3,15,1
+com.tesis.automation.utils.JsonSchemaValidator.validatePayment(Response),0,1,1,3,15,1
+com.tesis.automation.utils.JsonSchemaValidator.validateProductCatalog(Response),0,1,1,3,15,1
+com.tesis.automation.utils.ScenarioContext.clear(),0,1,1,6,15,1
+com.tesis.automation.utils.ScenarioContext.exists(String),0,1,1,6,24,1
+com.tesis.automation.utils.ScenarioContext.get(String),0,1,1,6,19,1
+com.tesis.automation.utils.ScenarioContext.getLong(String),1,2,2,10,59,2
+com.tesis.automation.utils.ScenarioContext.getString(String),1,1,2,7,44,2
+"com.tesis.automation.utils.ScenarioContext.set(String, Object)",0,1,1,6,24,1
+
+Class,LOC,OCavg,OCmax,V,WMC
+com.tesis.automation.clients.BaseApiClient,110,1.50,3,"1,063",12
+com.tesis.automation.clients.CartApiClient,49,1.00,1,325,4
+com.tesis.automation.clients.CatalogApiClient,38,1.00,1,211,3
+com.tesis.automation.clients.CheckoutApiClient,28,1.00,1,162,2
+com.tesis.automation.dto.AdditionalField,13,n/a,n/a,13,0
+com.tesis.automation.dto.Address,31,n/a,n/a,87,0
+com.tesis.automation.dto.IsoCountry,13,n/a,n/a,13,0
+com.tesis.automation.dto.OrderPayment,30,n/a,n/a,81,0
+com.tesis.automation.dto.OrderWrapper,27,n/a,n/a,87,0
+com.tesis.automation.dto.PaymentTransaction,30,n/a,n/a,81,0
+com.tesis.automation.hooks.CommonHooks,19,1.00,1,118,2
+com.tesis.automation.runners.RunCucumberTest,6,n/a,n/a,24,0
+com.tesis.automation.steps.CartSteps,55,1.17,2,833,7
+com.tesis.automation.steps.CatalogSteps,31,1.00,1,439,4
+com.tesis.automation.steps.CheckoutSteps,56,1.00,1,797,8
+com.tesis.automation.steps.CommonSteps,124,1.35,5,"2,267",27
+com.tesis.automation.steps.PaymentSteps,29,1.00,1,345,5
+com.tesis.automation.tests.Main,14,2.00,2,85,2
+com.tesis.automation.tests.catalog.CatalogSmokeTest,36,1.00,1,303,3
+com.tesis.automation.tests.checkout.CheckoutHappyPathTest,214,1.38,3,"3,015",11
+com.tesis.automation.utils.DataGenerator,71,1.00,1,731,5
+com.tesis.automation.utils.JsonSchemaValidator,20,1.00,1,181,6
+com.tesis.automation.utils.ScenarioContext,49,1.33,1,480,8
+com.tesis.automation.utils.ScenarioContext.Keys,12,n/a,n/a,107,0
+
+Package,LOC,v(G)avg,v(G)tot
+,10,n/a,n/a
+com.tesis.automation.clients,244,1.35,23
+com.tesis.automation.dto,186,n/a,n/a
+com.tesis.automation.hooks,25,1.00,2
+com.tesis.automation.runners,12,n/a,n/a
+com.tesis.automation.steps,349,1.28,55
+com.tesis.automation.tests,15,2.00,2
+com.tesis.automation.tests.catalog,43,1.00,3
+com.tesis.automation.tests.checkout,221,1.62,13
+com.tesis.automation.utils,168,1.12,19
+features,89,n/a,n/a
+schemas,390,n/a,n/a
+
+Module,LOC,v(G)avg,v(G)tot
+broadleaf-api-test,"5,876",1.29,117
+
+FileType,LOC
+.gitignore (GitIgnore),39
+CSV/TSV data,96
+Cascading style sheet,29
+Files supported via TextMate bundles,70
+JSON,820
+Java,"1,263"
+JavaScript,471
+Markdown,275
+Patch,30
+Properties,13
+Scalable Vector Graphics,1
+Shell script,211
+Text,"2,248"
+XML,164
+YAML,146
+
+Project,LOC,v(G)avg,v(G)tot
+project,"5,876",1.29,117
+

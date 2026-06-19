@@ -1,0 +1,17 @@
+diff --git a/src/test/resources/schemas/cart-schema.json b/src/test/resources/schemas/cart-schema.json
+index 030fd90..c08b361 100644
+--- a/src/test/resources/schemas/cart-schema.json
++++ b/src/test/resources/schemas/cart-schema.json
+@@ -2,11 +2,10 @@
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "title": "Cart Schema - Broadleaf Commerce",
+   "type": "object",
+-  "required": ["id", "status", "itemCount", "customer"],
++  "required": ["id", "itemCount", "customer"],
+   "properties": {
+     "id": { "type": "integer" },
+     "orderNumber": { "type": ["string", "null"] },
+-    "status": { "type": "string", "enum": ["IN_PROCESS", "SUBMITTED"] },
+     "submitDate": { "type": ["string", "null"] },
+     "itemCount": { "type": "integer" },
+     "subTotal": { "type": ["object", "null"] },

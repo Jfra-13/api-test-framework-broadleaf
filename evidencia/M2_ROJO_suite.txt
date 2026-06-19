@@ -1,0 +1,33 @@
+M2 — CAMBIO DE TIPO (itemCount: integer -> string) — ESTADO ROJO
+Suite: com.tesis.automation.runners.RunCucumberTest  | Process finished with exit code -1
+Filtro activo: Oe4CartContractMutationFilter ACTIVE=true MUTATION="M2"
+(Extracto de la corrida ROJO; log crudo completo fue sobrescrito por la corrida VERDE.
+ El detector ÚNICO es el contrato JSON Schema cart-schema.json.)
+
+================================================================================
+FALLO REPETIDO (3 validaciones de contrato de cart): cart.feature:11, cart.feature:20, checkout.feature:17
+================================================================================
+
+  And la respuesta cumple con el contrato "cart-schema.json"   # CheckoutSteps.validateAgainstSchema
+      java.lang.AssertionError: 1 expectation failed.
+Response body doesn't match expectation.
+Expected: The content to match the given JSON schema.
+error: instance type (string) does not match any allowed primitive type (allowed: ["integer"])
+    level: "error"
+    schema: {"loadingURI":".../cart-schema.json#","pointer":"/properties/itemCount"}
+    instance: {"pointer":"/itemCount"}
+    domain: "validation"
+    keyword: "type"
+    found: "string"
+    expected: ["integer"]
+
+  Actual (GET /cart, carrito nuevo): {"id":1,...,"itemCount":"0","customer":{...},...}
+  Actual (POST /cart/{id}/item):     {"id":2,...,"itemCount":"1","customer":{...},"orderItems":[...]}
+        at com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(CheckoutSteps.java:81)
+        at ✽.la respuesta cumple con el contrato "cart-schema.json"(classpath:features/cart.feature:11)
+
+--------------------------------------------------------------------------------
+NOTA METODOLÓGICA:
+El step funcional `And el campo "itemCount" debe ser igual a 1` (CommonSteps.fieldEqualsInt)
+PASÓ por coerción de RestAssured ("1" -> 1). El cambio de tipo lo cazó SOLO el contrato.
+DETECCION_M2 = Sí (vía JSON Schema)  |  FN_M2 = 0  |  Gherkin intacto.

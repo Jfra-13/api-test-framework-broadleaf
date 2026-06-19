@@ -1,0 +1,1221 @@
+PS C:\software\projects\TESIS_QA\WEBSITE\DemoSite> tree /f
+Folder PATH listing for volume OS
+Volume serial number is 00000075 EAF0:54D0
+C:.
+│   .gitignore
+│   configuracion_puertos.txt
+│   mvnw
+│   mvnw.cmd
+│   pom.xml
+│   README.md
+│
+├───.github
+│       pull_request_template.md
+│
+├───.idea
+│       .gitignore
+│       compiler.xml
+│       encodings.xml
+│       jarRepositories.xml
+│       misc.xml
+│       vcs.xml
+│       workspace.xml
+│
+├───.mvn
+│   └───wrapper
+│           maven-wrapper.jar
+│           maven-wrapper.properties
+│           MavenWrapperDownloader.java
+│
+├───admin
+│   │   pom.xml
+│   │
+│   ├───src
+│   │   └───main
+│   │       ├───java
+│   │       │   └───com
+│   │       │       └───community
+│   │       │           └───admin
+│   │       │               │   AdminApplication.java
+│   │       │               │
+│   │       │               ├───configuration
+│   │       │               │       AdminCommunityDemoStyleConfig.java
+│   │       │               │       AdminConfig.java
+│   │       │               │       AdminSecurityConfig.java
+│   │       │               │       AdminServletConfig.java
+│   │       │               │
+│   │       │               └───web
+│   │       │                   │   AdminSolrReindexController.java
+│   │       │                   │
+│   │       │                   └───filter
+│   │       │                           AdminContentSecurityPolicyFilter.java
+│   │       │
+│   │       └───resources
+│   │           │   application.properties
+│   │           │   applicationContext-admin.xml
+│   │           │   bl-override-ehcache-admin.xml
+│   │           │   blc-example.keystore
+│   │           │
+│   │           ├───community-demo-style
+│   │           │   └───templates
+│   │           │       └───admin
+│   │           │               community_indexer.html
+│   │           │
+│   │           └───runtime-properties
+│   │                   common.properties
+│   │                   default.properties
+│   │                   integrationdev.properties
+│   │                   integrationqa.properties
+│   │                   local.properties
+│   │                   production.properties
+│   │                   staging.properties
+│   │
+│   └───target
+│       │   admin.jar
+│       │   admin.jar.original
+│       │
+│       ├───agents
+│       │       spring-instrument.jar
+│       │
+│       ├───classes
+│       │   │   application.properties
+│       │   │   applicationContext-admin.xml
+│       │   │   bl-override-ehcache-admin.xml
+│       │   │   blc-example.keystore
+│       │   │   rebel.xml
+│       │   │
+│       │   ├───com
+│       │   │   └───community
+│       │   │       └───admin
+│       │   │           │   AdminApplication$BroadleafFrameworkConfiguration.class
+│       │   │           │   AdminApplication.class
+│       │   │           │
+│       │   │           ├───configuration
+│       │   │           │       AdminCommunityDemoStyleConfig.class
+│       │   │           │       AdminConfig.class
+│       │   │           │       AdminSecurityConfig$DependencyConfiguration.class
+│       │   │           │       AdminSecurityConfig.class
+│       │   │           │       AdminServletConfig.class
+│       │   │           │
+│       │   │           └───web
+│       │   │               │   AdminSolrReindexController.class
+│       │   │               │
+│       │   │               └───filter
+│       │   │                       AdminContentSecurityPolicyFilter.class
+│       │   │
+│       │   ├───community-demo-style
+│       │   │   └───templates
+│       │   │       └───admin
+│       │   │               community_indexer.html
+│       │   │
+│       │   └───runtime-properties
+│       │           common.properties
+│       │           default.properties
+│       │           integrationdev.properties
+│       │           integrationqa.properties
+│       │           local.properties
+│       │           production.properties
+│       │           staging.properties
+│       │
+│       ├───generated-sources
+│       │   └───annotations
+│       ├───maven-archiver
+│       │       pom.properties
+│       │
+│       └───maven-status
+│           └───maven-compiler-plugin
+│               └───compile
+│                   └───default-compile
+│                           createdFiles.lst
+│                           inputFiles.lst
+│
+├───api
+│   │   pom.xml
+│   │
+│   ├───src
+│   │   └───main
+│   │       ├───java
+│   │       │   └───com
+│   │       │       └───community
+│   │       │           └───api
+│   │       │               │   ApiApplication.java
+│   │       │               │   SpringRestExceptionMapper.java
+│   │       │               │
+│   │       │               ├───configuration
+│   │       │               │       ApiConfig.java
+│   │       │               │       ApiSecurityConfig.java
+│   │       │               │       RestApiMvcConfiguration.java
+│   │       │               │
+│   │       │               └───endpoint
+│   │       │                   └───cart
+│   │       │                           CustomCartEndpoint.java
+│   │       │                           Oe4CartContractMutationFilter.java
+│   │       │
+│   │       └───resources
+│   │           │   bl-override-ehcache.xml
+│   │           │   blc-example.keystore
+│   │           │   messages.properties
+│   │           │
+│   │           └───runtime-properties
+│   │                   common.properties
+│   │                   default.properties
+│   │                   integrationdev.properties
+│   │                   integrationqa.properties
+│   │                   production.properties
+│   │                   staging.properties
+│   │
+│   └───target
+│       │   api.jar
+│       │   api.jar.original
+│       │
+│       ├───agents
+│       │       spring-instrument.jar
+│       │
+│       ├───classes
+│       │   │   bl-override-ehcache.xml
+│       │   │   blc-example.keystore
+│       │   │   messages.properties
+│       │   │   rebel.xml
+│       │   │
+│       │   ├───com
+│       │   │   └───community
+│       │   │       └───api
+│       │   │           │   ApiApplication$BroadleafFrameworkConfiguration.class
+│       │   │           │   ApiApplication.class
+│       │   │           │   SpringRestExceptionMapper.class
+│       │   │           │
+│       │   │           ├───configuration
+│       │   │           │       ApiConfig.class
+│       │   │           │       ApiSecurityConfig.class
+│       │   │           │       RestApiMvcConfiguration$EnableBroadleafRestControllers.class
+│       │   │           │       RestApiMvcConfiguration$SwaggerConfig$TranslationOperationBuilderPlugin.class
+│       │   │           │       RestApiMvcConfiguration$SwaggerConfig.class
+│       │   │           │       RestApiMvcConfiguration.class
+│       │   │           │
+│       │   │           └───endpoint
+│       │   │               └───cart
+│       │   │                       CustomCartEndpoint.class
+│       │   │                       Oe4CartContractMutationFilter$CapturingResponseWrapper$1.class
+│       │   │                       Oe4CartContractMutationFilter$CapturingResponseWrapper.class
+│       │   │                       Oe4CartContractMutationFilter.class
+│       │   │
+│       │   └───runtime-properties
+│       │           common.properties
+│       │           default.properties
+│       │           integrationdev.properties
+│       │           integrationqa.properties
+│       │           production.properties
+│       │           staging.properties
+│       │
+│       ├───generated-sources
+│       │   └───annotations
+│       ├───maven-archiver
+│       │       pom.properties
+│       │
+│       └───maven-status
+│           └───maven-compiler-plugin
+│               └───compile
+│                   └───default-compile
+│                           createdFiles.lst
+│                           inputFiles.lst
+│
+├───core
+│   │   pom.xml
+│   │
+│   ├───src
+│   │   └───main
+│   │       ├───java
+│   │       │   └───com
+│   │       │       └───community
+│   │       │           └───core
+│   │       │               ├───config
+│   │       │               │       ApplicationSolrConfiguration.java
+│   │       │               │       CoreConfig.java
+│   │       │               │       CoreEmailConfig.java
+│   │       │               │       CorePersistenceConfig.java
+│   │       │               │       StringFactoryBean.java
+│   │       │               │
+│   │       │               └───service
+│   │       │                   └───search
+│   │       │                           SolrIndexCleanupService.java
+│   │       │                           SolrIndexCleanupServiceImpl.java
+│   │       │
+│   │       └───resources
+│   │           │   applicationContext-entity.xml
+│   │           │   banner.txt
+│   │           │   logback.xml
+│   │           │
+│   │           ├───cms
+│   │           │   └───static
+│   │           │       └───img
+│   │           │           ├───banners
+│   │           │           │       buy-one-get-one-home-banner.jpg
+│   │           │           │       buy-two-get-one.jpg
+│   │           │           │       member-special.jpg
+│   │           │           │       promocion-camisas.jpg
+│   │           │           │       shirt-special.jpg
+│   │           │           │       shirts-speciale.jpg
+│   │           │           │
+│   │           │           ├───merch
+│   │           │           │       habanero_mens_black.jpg
+│   │           │           │       habanero_mens_red.jpg
+│   │           │           │       habanero_mens_silver.jpg
+│   │           │           │       habanero_womens_black.jpg
+│   │           │           │       habanero_womens_red.jpg
+│   │           │           │       habanero_womens_silver.jpg
+│   │           │           │       heat_clinic_handdrawn_mens_black.jpg
+│   │           │           │       heat_clinic_handdrawn_mens_red.jpg
+│   │           │           │       heat_clinic_handdrawn_mens_silver.jpg
+│   │           │           │       heat_clinic_handdrawn_womens_black.jpg
+│   │           │           │       heat_clinic_handdrawn_womens_red.jpg
+│   │           │           │       heat_clinic_handdrawn_womens_silver.jpg
+│   │           │           │       heat_clinic_mascot_mens_black.jpg
+│   │           │           │       heat_clinic_mascot_mens_red.jpg
+│   │           │           │       heat_clinic_mascot_mens_silver.jpg
+│   │           │           │       heat_clinic_mascot_womens_black.jpg
+│   │           │           │       heat_clinic_mascot_womens_red.jpg
+│   │           │           │       heat_clinic_mascot_womens_silver.jpg
+│   │           │           │
+│   │           │           └───sauces
+│   │           │                   Armageddon-The-Hot-Sauce-To-End-All-Bottle.jpg
+│   │           │                   Armageddon-The-Hot-Sauce-To-End-All-Close.jpg
+│   │           │                   Blazin-Saddle-XXX-Hot-Habanero-Pepper-Sauce-Bottle.jpg
+│   │           │                   Blazin-Saddle-XXX-Hot-Habanero-Pepper-Sauce-Close.jpg
+│   │           │                   Bull-Snort-Cowboy-Cayenne-Pepper-Hot-Sauce-Bottle.jpg
+│   │           │                   Bull-Snort-Cowboy-Cayenne-Pepper-Hot-Sauce-Close.jpg
+│   │           │                   Bull-Snort-Smokin-Toncils-Hot-Sauce-Bottle.jpg
+│   │           │                   Bull-Snort-Smokin-Toncils-Hot-Sauce-Close.jpg
+│   │           │                   Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Bottle.jpg
+│   │           │                   Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Close.jpg
+│   │           │                   Cool-Cayenne-Pepper-Hot-Sauce-Bottle.jpg
+│   │           │                   Cool-Cayenne-Pepper-Hot-Sauce-Close.jpg
+│   │           │                   Day-of-the-Dead-Chipotle-Hot-Sauce-Bottle.jpg
+│   │           │                   Day-of-the-Dead-Chipotle-Hot-Sauce-Close.jpg
+│   │           │                   Day-of-the-Dead-Habanero-Hot-Sauce-Bottle.jpg
+│   │           │                   Day-of-the-Dead-Habanero-Hot-Sauce-Close.jpg
+│   │           │                   Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Bottle.jpg
+│   │           │                   Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Close.jpg
+│   │           │                   Dr.-Chilemeisters-Insane-Hot-Sauce-Bottle.jpg
+│   │           │                   Dr.-Chilemeisters-Insane-Hot-Sauce-Close.jpg
+│   │           │                   Green-Ghost-Bottle.jpg
+│   │           │                   Green-Ghost-Close.jpg
+│   │           │                   Hoppin-Hot-Sauce-Bottle.jpg
+│   │           │                   Hoppin-Hot-Sauce-Close.jpg
+│   │           │                   hot_sauce_bundle.jpg
+│   │           │                   Hurtin-Jalepeno-Hot-Sauce-Bottle.jpg
+│   │           │                   Hurtin-Jalepeno-Hot-Sauce-Close.jpg
+│   │           │                   Insanity-Sauce-Bottle.jpg
+│   │           │                   Insanity-Sauce-Close.jpg
+│   │           │                   Roasted-Garlic-Hot-Sauce-Bottle.jpg
+│   │           │                   Roasted-Garlic-Hot-Sauce-Close.jpg
+│   │           │                   Roasted-Red-Pepper-and-Chipotle-Hot-Sauce-Bottle.jpg
+│   │           │                   Roasted-Red-Pepper-and-Chipotle-Hot-Sauce-Close.jpg
+│   │           │                   Scotch-Bonnet-Hot-Sauce-Bottle.jpg
+│   │           │                   Scotch-Bonnet-Hot-Sauce-Close.jpg
+│   │           │                   Sudden-Death-Sauce-Bottle.jpg
+│   │           │                   Sudden-Death-Sauce-Close.jpg
+│   │           │                   Sweet-Death-Sauce-Bottle.jpg
+│   │           │                   Sweet-Death-Sauce-Close.jpg
+│   │           │                   Sweet-Death-Sauce-Grass.jpg
+│   │           │                   Sweet-Death-Sauce-Logo.jpg
+│   │           │                   Sweet-Death-Sauce-Skull.jpg
+│   │           │                   Sweet-Death-Sauce-Tile.jpg
+│   │           │
+│   │           ├───META-INF
+│   │           │       persistence-core.xml
+│   │           │
+│   │           ├───runtime-properties
+│   │           │       common-shared.properties
+│   │           │       default-shared.properties
+│   │           │       integrationdev-shared.properties
+│   │           │       integrationqa-shared.properties
+│   │           │       production-shared.properties
+│   │           │       staging-shared.properties
+│   │           │
+│   │           └───sql
+│   │                   load_solr_reindex_community.sql
+│   │
+│   └───target
+│       │   boot-community-demo-core-1.0.0-SNAPSHOT.jar
+│       │
+│       ├───classes
+│       │   │   applicationContext-entity.xml
+│       │   │   banner.txt
+│       │   │   logback.xml
+│       │   │   rebel.xml
+│       │   │
+│       │   ├───cms
+│       │   │   └───static
+│       │   │       └───img
+│       │   │           ├───banners
+│       │   │           │       buy-one-get-one-home-banner.jpg
+│       │   │           │       buy-two-get-one.jpg
+│       │   │           │       member-special.jpg
+│       │   │           │       promocion-camisas.jpg
+│       │   │           │       shirt-special.jpg
+│       │   │           │       shirts-speciale.jpg
+│       │   │           │
+│       │   │           ├───merch
+│       │   │           │       habanero_mens_black.jpg
+│       │   │           │       habanero_mens_red.jpg
+│       │   │           │       habanero_mens_silver.jpg
+│       │   │           │       habanero_womens_black.jpg
+│       │   │           │       habanero_womens_red.jpg
+│       │   │           │       habanero_womens_silver.jpg
+│       │   │           │       heat_clinic_handdrawn_mens_black.jpg
+│       │   │           │       heat_clinic_handdrawn_mens_red.jpg
+│       │   │           │       heat_clinic_handdrawn_mens_silver.jpg
+│       │   │           │       heat_clinic_handdrawn_womens_black.jpg
+│       │   │           │       heat_clinic_handdrawn_womens_red.jpg
+│       │   │           │       heat_clinic_handdrawn_womens_silver.jpg
+│       │   │           │       heat_clinic_mascot_mens_black.jpg
+│       │   │           │       heat_clinic_mascot_mens_red.jpg
+│       │   │           │       heat_clinic_mascot_mens_silver.jpg
+│       │   │           │       heat_clinic_mascot_womens_black.jpg
+│       │   │           │       heat_clinic_mascot_womens_red.jpg
+│       │   │           │       heat_clinic_mascot_womens_silver.jpg
+│       │   │           │
+│       │   │           └───sauces
+│       │   │                   Armageddon-The-Hot-Sauce-To-End-All-Bottle.jpg
+│       │   │                   Armageddon-The-Hot-Sauce-To-End-All-Close.jpg
+│       │   │                   Blazin-Saddle-XXX-Hot-Habanero-Pepper-Sauce-Bottle.jpg
+│       │   │                   Blazin-Saddle-XXX-Hot-Habanero-Pepper-Sauce-Close.jpg
+│       │   │                   Bull-Snort-Cowboy-Cayenne-Pepper-Hot-Sauce-Bottle.jpg
+│       │   │                   Bull-Snort-Cowboy-Cayenne-Pepper-Hot-Sauce-Close.jpg
+│       │   │                   Bull-Snort-Smokin-Toncils-Hot-Sauce-Bottle.jpg
+│       │   │                   Bull-Snort-Smokin-Toncils-Hot-Sauce-Close.jpg
+│       │   │                   Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Bottle.jpg
+│       │   │                   Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Close.jpg
+│       │   │                   Cool-Cayenne-Pepper-Hot-Sauce-Bottle.jpg
+│       │   │                   Cool-Cayenne-Pepper-Hot-Sauce-Close.jpg
+│       │   │                   Day-of-the-Dead-Chipotle-Hot-Sauce-Bottle.jpg
+│       │   │                   Day-of-the-Dead-Chipotle-Hot-Sauce-Close.jpg
+│       │   │                   Day-of-the-Dead-Habanero-Hot-Sauce-Bottle.jpg
+│       │   │                   Day-of-the-Dead-Habanero-Hot-Sauce-Close.jpg
+│       │   │                   Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Bottle.jpg
+│       │   │                   Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Close.jpg
+│       │   │                   Dr.-Chilemeisters-Insane-Hot-Sauce-Bottle.jpg
+│       │   │                   Dr.-Chilemeisters-Insane-Hot-Sauce-Close.jpg
+│       │   │                   Green-Ghost-Bottle.jpg
+│       │   │                   Green-Ghost-Close.jpg
+│       │   │                   Hoppin-Hot-Sauce-Bottle.jpg
+│       │   │                   Hoppin-Hot-Sauce-Close.jpg
+│       │   │                   hot_sauce_bundle.jpg
+│       │   │                   Hurtin-Jalepeno-Hot-Sauce-Bottle.jpg
+│       │   │                   Hurtin-Jalepeno-Hot-Sauce-Close.jpg
+│       │   │                   Insanity-Sauce-Bottle.jpg
+│       │   │                   Insanity-Sauce-Close.jpg
+│       │   │                   Roasted-Garlic-Hot-Sauce-Bottle.jpg
+│       │   │                   Roasted-Garlic-Hot-Sauce-Close.jpg
+│       │   │                   Roasted-Red-Pepper-and-Chipotle-Hot-Sauce-Bottle.jpg
+│       │   │                   Roasted-Red-Pepper-and-Chipotle-Hot-Sauce-Close.jpg
+│       │   │                   Scotch-Bonnet-Hot-Sauce-Bottle.jpg
+│       │   │                   Scotch-Bonnet-Hot-Sauce-Close.jpg
+│       │   │                   Sudden-Death-Sauce-Bottle.jpg
+│       │   │                   Sudden-Death-Sauce-Close.jpg
+│       │   │                   Sweet-Death-Sauce-Bottle.jpg
+│       │   │                   Sweet-Death-Sauce-Close.jpg
+│       │   │                   Sweet-Death-Sauce-Grass.jpg
+│       │   │                   Sweet-Death-Sauce-Logo.jpg
+│       │   │                   Sweet-Death-Sauce-Skull.jpg
+│       │   │                   Sweet-Death-Sauce-Tile.jpg
+│       │   │
+│       │   ├───com
+│       │   │   └───community
+│       │   │       └───core
+│       │   │           ├───config
+│       │   │           │       ApplicationSolrConfiguration.class
+│       │   │           │       CoreConfig.class
+│       │   │           │       CoreEmailConfig.class
+│       │   │           │       CorePersistenceConfig.class
+│       │   │           │       StringFactoryBean.class
+│       │   │           │
+│       │   │           └───service
+│       │   │               └───search
+│       │   │                       SolrIndexCleanupService.class
+│       │   │                       SolrIndexCleanupServiceImpl.class
+│       │   │
+│       │   ├───META-INF
+│       │   │       persistence-core.xml
+│       │   │
+│       │   ├───runtime-properties
+│       │   │       common-shared.properties
+│       │   │       default-shared.properties
+│       │   │       integrationdev-shared.properties
+│       │   │       integrationqa-shared.properties
+│       │   │       production-shared.properties
+│       │   │       staging-shared.properties
+│       │   │
+│       │   └───sql
+│       │           load_solr_reindex_community.sql
+│       │
+│       ├───generated-sources
+│       │   └───annotations
+│       ├───maven-archiver
+│       │       pom.properties
+│       │
+│       └───maven-status
+│           └───maven-compiler-plugin
+│               └───compile
+│                   └───default-compile
+│                           createdFiles.lst
+│                           inputFiles.lst
+│
+├───licenses
+│   │   licenses.properties
+│   │
+│   └───blc_dual
+│           commercial_license-1.1.txt
+│           fair_use_license-1.0.txt
+│           header.txt
+│
+└───site
+    │   pom.xml
+    │
+    ├───src
+    │   └───main
+    │       ├───java
+    │       │   └───com
+    │       │       └───community
+    │       │           │   SiteApplication.java
+    │       │           │
+    │       │           ├───configuration
+    │       │           │       SiteConfig.java
+    │       │           │       SiteSecurityConfig.java
+    │       │           │       SiteServletConfig.java
+    │       │           │
+    │       │           ├───controller
+    │       │           │   ├───account
+    │       │           │   │       ChangePasswordController.java
+    │       │           │   │       LoginController.java
+    │       │           │   │       ManageCustomerAddressesController.java
+    │       │           │   │       ManageCustomerPaymentsController.java
+    │       │           │   │       ManageWishlistController.java
+    │       │           │   │       OrderHistoryController.java
+    │       │           │   │       RedirectController.java
+    │       │           │   │       RegisterController.java
+    │       │           │   │       UpdateAccountController.java
+    │       │           │   │
+    │       │           │   ├───cart
+    │       │           │   │       CartController.java
+    │       │           │   │
+    │       │           │   ├───catalog
+    │       │           │   │       CategoryController.java
+    │       │           │   │       ProductController.java
+    │       │           │   │       RatingsController.java
+    │       │           │   │       SearchController.java
+    │       │           │   │       SkuController.java
+    │       │           │   │
+    │       │           │   ├───checkout
+    │       │           │   │       CheckoutController.java
+    │       │           │   │       OrderConfirmationController.java
+    │       │           │   │       PaymentInfoController.java
+    │       │           │   │       SampleGiftCardController.java
+    │       │           │   │       ShippingInfoController.java
+    │       │           │   │
+    │       │           │   ├───contactus
+    │       │           │   │       ContactUsController.java
+    │       │           │   │
+    │       │           │   ├───content
+    │       │           │   │       PageController.java
+    │       │           │   │
+    │       │           │   └───seo
+    │       │           │           RobotsController.java
+    │       │           │           SiteMapController.java
+    │       │           │
+    │       │           ├───service
+    │       │           │       SavedPaymentServiceImpl.java
+    │       │           │
+    │       │           └───workflow
+    │       │               └───checkout
+    │       │                       SendOrderConfirmationEmailActivity.java
+    │       │
+    │       └───resources
+    │           │   bl-override-ehcache.xml
+    │           │   blc-example.keystore
+    │           │   messages.properties
+    │           │   messages_es.properties
+    │           │   messages_fr.properties
+    │           │
+    │           ├───css
+    │           │   │   bootstrap-grid-flexbox.css
+    │           │   │   bootstrap-grid-flexbox.min.css
+    │           │   │   bootstrap.min.css
+    │           │   │   jquery.rating.css
+    │           │   │   material-kit.css
+    │           │   │   material-kit.min.css
+    │           │   │   style-v2.css
+    │           │   │   toastr.css
+    │           │   │
+    │           │   ├───account
+    │           │   │       account.css
+    │           │   │       loginAndRegister.css
+    │           │   │       wishlist.css
+    │           │   │
+    │           │   ├───cart
+    │           │   │       mini-cart-item-list.css
+    │           │   │       mini-cart.css
+    │           │   │
+    │           │   ├───catalog
+    │           │   │       categorySearch.css
+    │           │   │       featuredProduct.css
+    │           │   │       product.css
+    │           │   │       productListItem.css
+    │           │   │       productPagingOption.css
+    │           │   │       productSortOptions.css
+    │           │   │
+    │           │   ├───checkout
+    │           │   │       checkout.css
+    │           │   │
+    │           │   ├───error
+    │           │   │       error.css
+    │           │   │
+    │           │   └───layout
+    │           │           footer.css
+    │           │           header.css
+    │           │
+    │           ├───emailTemplates
+    │           │       orderConfirmation-email.html
+    │           │       register-email.html
+    │           │       resetPassword-email.html
+    │           │
+    │           ├───fonts
+    │           │       font-licenses.txt
+    │           │       open-sans400.woff
+    │           │       open-sans600.woff
+    │           │       oxygen400.woff
+    │           │
+    │           ├───img
+    │           │   │   badge-new.png
+    │           │   │   blank.gif
+    │           │   │   broadleaf-seal.png
+    │           │   │   canvas.jpg
+    │           │   │   darker.jpg
+    │           │   │   glyphicons-halflings-white.png
+    │           │   │   glyphicons-halflings.png
+    │           │   │   loading.gif
+    │           │   │   nav-divider.jpg
+    │           │   │   nav-divider.png
+    │           │   │   paypal.gif
+    │           │   │   price-slider.jpg
+    │           │   │   rhs-ad.jpg
+    │           │   │   right_column_headerbg.jpg
+    │           │   │   search-button.png
+    │           │   │   sharethis.png
+    │           │   │   shopping_cart.png
+    │           │   │   sidebarbg.jpg
+    │           │   │   star.gif
+    │           │   │   the-heat-clinic-logo-internal.png
+    │           │   │   the-heat-clinic-logo.png
+    │           │   │   the-heat-clinic-seal.png
+    │           │   │   x.png
+    │           │   │   zoomloader.gif
+    │           │   │
+    │           │   ├───flags
+    │           │   │       France.png
+    │           │   │       Mexico.png
+    │           │   │       Spain.png
+    │           │   │       United-Kingdom.png
+    │           │   │       United-States.png
+    │           │   │
+    │           │   └───payment
+    │           │           american-express-curved-32px.png
+    │           │           discover-curved-32px.png
+    │           │           mastercard-curved-32px.png
+    │           │           paypal-curved-32px.png
+    │           │           visa-curved-32px.png
+    │           │
+    │           ├───js
+    │           │   │   accountManagementEventHandlers.js
+    │           │   │   accountManagementOperations.js
+    │           │   │   cartEventHandlers.js
+    │           │   │   cartOperations.js
+    │           │   │   categoryFilter.js
+    │           │   │   checkoutEventHandlers.js
+    │           │   │   checkoutOperations.js
+    │           │   │   globalOnReady.js
+    │           │   │   globalOnReadyEventHandlers.js
+    │           │   │   heatClinic-uncacheableData.js
+    │           │   │   heatClinicEventHandlers.js
+    │           │   │   heatClinicOperations.js
+    │           │   │   jssor.slider-20.min.js
+    │           │   │   loginRegisterEventHandlers.js
+    │           │   │   loginRegisterOperations.js
+    │           │   │   plugins.js
+    │           │   │   productPageEventHandlers.js
+    │           │   │   productPageOperations.js
+    │           │   │   reviewEventHandlers.js
+    │           │   │   reviewOperations.js
+    │           │   │   samplePaymentService.js
+    │           │   │
+    │           │   └───libs
+    │           │       │   jquery-3.1.1.min.js
+    │           │       │   jquery.dotdotdot-1.5.1.js
+    │           │       │   jquery.MetaData.js
+    │           │       │   jquery.rating.pack.js
+    │           │       │   jquery.zoom.js
+    │           │       │   jquery.zoom.min.js
+    │           │       │   modernizr-2.5.3.min.js
+    │           │       │   toastr.js
+    │           │       │
+    │           │       └───material-kit
+    │           │               atv-img-animation.js
+    │           │               bootstrap-datetimepicker.js
+    │           │               bootstrap-selectpicker.js
+    │           │               bootstrap-tagsinput.js
+    │           │               bootstrap.min.js
+    │           │               jasny-bootstrap.min.js
+    │           │               jquery.flexisel.js
+    │           │               jquery.min.js
+    │           │               material-kit.js
+    │           │               material-kit.min.js
+    │           │               material.min.js
+    │           │               moment.min.js
+    │           │               nouislider.min.js
+    │           │
+    │           ├───runtime-properties
+    │           │       common.properties
+    │           │       default.properties
+    │           │       integrationdev.properties
+    │           │       integrationqa.properties
+    │           │       production.properties
+    │           │       staging.properties
+    │           │
+    │           └───webTemplates
+    │               │   error.html
+    │               │
+    │               ├───account
+    │               │   │   changePassword.html
+    │               │   │   credit.html
+    │               │   │   manageCustomerAddresses.html
+    │               │   │   manageCustomerPayments.html
+    │               │   │   manageWishlist.html
+    │               │   │   orderHistory.html
+    │               │   │   redeemGiftCard.html
+    │               │   │   updateAccount.html
+    │               │   │
+    │               │   └───partials
+    │               │           accountMenu.html
+    │               │           customerAddress.html
+    │               │           orderDetails.html
+    │               │           savedPaymentForm.html
+    │               │           wishlistItemsRow.html
+    │               │
+    │               ├───authentication
+    │               │       forgotPassword.html
+    │               │       forgotPasswordSuccess.html
+    │               │       login.html
+    │               │       loginForm.html
+    │               │       registerForm.html
+    │               │       resetPassword.html
+    │               │       resetPasswordError.html
+    │               │
+    │               ├───cart
+    │               │   │   cart.html
+    │               │   │
+    │               │   └───partials
+    │               │           cartBundledProducts.html
+    │               │           cartItemSummary.html
+    │               │           cartOperations.html
+    │               │           cartPricingSummary.html
+    │               │           cartProductRow.html
+    │               │
+    │               ├───catalog
+    │               │   │   category.html
+    │               │   │   product.html
+    │               │   │   search.html
+    │               │   │   sku.html
+    │               │   │
+    │               │   └───partials
+    │               │           facetFilter.html
+    │               │           facetValueDisplay.html
+    │               │           featuredProduct.html
+    │               │           offers.html
+    │               │           productListItem.html
+    │               │           productListItemHoverActions.html
+    │               │           productOperations.html
+    │               │           productOptions.html
+    │               │           productPagingOptions.html
+    │               │           productPrice.html
+    │               │           productQuickView.html
+    │               │           productReviews.html
+    │               │           productSortOptions.html
+    │               │           productZoomModal.html
+    │               │           relatedProduct.html
+    │               │           review.html
+    │               │           reviewSuccessful.html
+    │               │           rightHandBannerAds.html
+    │               │           skuListItem.html
+    │               │           socialMediaButtons.html
+    │               │           wishlistButton.html
+    │               │
+    │               ├───checkout
+    │               │   │   checkout.html
+    │               │   │   checkoutLogin.html
+    │               │   │   confirmation.html
+    │               │   │   multiship.html
+    │               │   │   multishipAddAddressForm.html
+    │               │   │
+    │               │   ├───partials
+    │               │   │       accountCreditForm.html
+    │               │   │       applyCreditForm.html
+    │               │   │       applyGiftCard.html
+    │               │   │       billingAddress.html
+    │               │   │       checkoutAlert.html
+    │               │   │       checkoutStages.html
+    │               │   │       confirmationMessages.html
+    │               │   │       confirmationPaymentInfo.html
+    │               │   │       confirmationShippingInfo.html
+    │               │   │       demoDisclaimer.html
+    │               │   │       miniCart.html
+    │               │   │       miniCartItemList.html
+    │               │   │       multishipInfo.html
+    │               │   │       multiShipInfoForm.html
+    │               │   │       orderInfoForm.html
+    │               │   │       orderItemConfigureMessaging.html
+    │               │   │       orderSummary.html
+    │               │   │       paymentMethods.html
+    │               │   │       promoCodes.html
+    │               │   │       shippingInfoForm.html
+    │               │   │       singleShipInfoForm.html
+    │               │   │
+    │               │   ├───payment
+    │               │   │       codPaymentMethodForm.html
+    │               │   │       creditCardPaymentMethodForm.html
+    │               │   │       payPalPaymentMethodForm.html
+    │               │   │
+    │               │   └───stages
+    │               │           paymentStage.html
+    │               │           reviewStage.html
+    │               │           shippingStage.html
+    │               │
+    │               ├───contactus
+    │               │       contactus.html
+    │               │       success.html
+    │               │
+    │               ├───content
+    │               │       default.html
+    │               │       news.html
+    │               │       NONE.html
+    │               │       plain.html
+    │               │       simple.html
+    │               │
+    │               ├───homepage
+    │               │       bannerAd.html
+    │               │       middlePromo.html
+    │               │
+    │               ├───layout
+    │               │   │   accountLayout.html
+    │               │   │   checkoutPageLayout.html
+    │               │   │   fullPageLayout.html
+    │               │   │   fullPageNoNavLayout.html
+    │               │   │   homepage.html
+    │               │   │
+    │               │   └───partials
+    │               │           breadcrumbs.html
+    │               │           footer.html
+    │               │           head.html
+    │               │           modals.html
+    │               │           nav.html
+    │               │           navLocaleSelector.html
+    │               │           navMegaMenu.html
+    │               │           navMenu.html
+    │               │           registeredCustomerActions.html
+    │               │
+    │               ├───partials
+    │               │       creditCard.html
+    │               │       creditCardTypes.html
+    │               │       savedPaymentCard.html
+    │               │       simpleAddress.html
+    │               │
+    │               ├───seo
+    │               │   └───partials
+    │               │           seoMetaProperties.html
+    │               │
+    │               └───utility
+    │                       blcRedirect.html
+    │                       error.html
+    │
+    └───target
+        │   ROOT.jar
+        │   ROOT.jar.original
+        │
+        ├───agents
+        │       spring-instrument.jar
+        │
+        ├───classes
+        │   │   bl-override-ehcache.xml
+        │   │   blc-example.keystore
+        │   │   messages.properties
+        │   │   messages_es.properties
+        │   │   messages_fr.properties
+        │   │   rebel.xml
+        │   │
+        │   ├───com
+        │   │   └───community
+        │   │       │   SiteApplication$BroadleafFrameworkConfiguration.class
+        │   │       │   SiteApplication.class
+        │   │       │
+        │   │       ├───configuration
+        │   │       │       SiteConfig$SolrReindexConfig.class
+        │   │       │       SiteConfig.class
+        │   │       │       SiteSecurityConfig$DependencyConfiguration.class
+        │   │       │       SiteSecurityConfig.class
+        │   │       │       SiteServletConfig.class
+        │   │       │
+        │   │       ├───controller
+        │   │       │   ├───account
+        │   │       │   │       ChangePasswordController.class
+        │   │       │   │       LoginController.class
+        │   │       │   │       ManageCustomerAddressesController.class
+        │   │       │   │       ManageCustomerPaymentsController.class
+        │   │       │   │       ManageWishlistController.class
+        │   │       │   │       OrderHistoryController.class
+        │   │       │   │       RedirectController.class
+        │   │       │   │       RegisterController.class
+        │   │       │   │       UpdateAccountController.class
+        │   │       │   │
+        │   │       │   ├───cart
+        │   │       │   │       CartController.class
+        │   │       │   │
+        │   │       │   ├───catalog
+        │   │       │   │       CategoryController.class
+        │   │       │   │       ProductController.class
+        │   │       │   │       RatingsController.class
+        │   │       │   │       SearchController.class
+        │   │       │   │       SkuController.class
+        │   │       │   │
+        │   │       │   ├───checkout
+        │   │       │   │       CheckoutController.class
+        │   │       │   │       OrderConfirmationController.class
+        │   │       │   │       PaymentInfoController.class
+        │   │       │   │       SampleGiftCardController.class
+        │   │       │   │       ShippingInfoController.class
+        │   │       │   │
+        │   │       │   ├───contactus
+        │   │       │   │       ContactUsController.class
+        │   │       │   │
+        │   │       │   ├───content
+        │   │       │   │       PageController.class
+        │   │       │   │
+        │   │       │   └───seo
+        │   │       │           RobotsController.class
+        │   │       │           SiteMapController.class
+        │   │       │
+        │   │       ├───service
+        │   │       │       SavedPaymentServiceImpl.class
+        │   │       │
+        │   │       └───workflow
+        │   │           └───checkout
+        │   │                   SendOrderConfirmationEmailActivity.class
+        │   │
+        │   ├───css
+        │   │   │   bootstrap-grid-flexbox.css
+        │   │   │   bootstrap-grid-flexbox.min.css
+        │   │   │   bootstrap.min.css
+        │   │   │   jquery.rating.css
+        │   │   │   material-kit.css
+        │   │   │   material-kit.min.css
+        │   │   │   style-v2.css
+        │   │   │   toastr.css
+        │   │   │
+        │   │   ├───account
+        │   │   │       account.css
+        │   │   │       loginAndRegister.css
+        │   │   │       wishlist.css
+        │   │   │
+        │   │   ├───cart
+        │   │   │       mini-cart-item-list.css
+        │   │   │       mini-cart.css
+        │   │   │
+        │   │   ├───catalog
+        │   │   │       categorySearch.css
+        │   │   │       featuredProduct.css
+        │   │   │       product.css
+        │   │   │       productListItem.css
+        │   │   │       productPagingOption.css
+        │   │   │       productSortOptions.css
+        │   │   │
+        │   │   ├───checkout
+        │   │   │       checkout.css
+        │   │   │
+        │   │   ├───error
+        │   │   │       error.css
+        │   │   │
+        │   │   └───layout
+        │   │           footer.css
+        │   │           header.css
+        │   │
+        │   ├───emailTemplates
+        │   │       orderConfirmation-email.html
+        │   │       register-email.html
+        │   │       resetPassword-email.html
+        │   │
+        │   ├───fonts
+        │   │       font-licenses.txt
+        │   │       open-sans400.woff
+        │   │       open-sans600.woff
+        │   │       oxygen400.woff
+        │   │
+        │   ├───img
+        │   │   │   badge-new.png
+        │   │   │   blank.gif
+        │   │   │   broadleaf-seal.png
+        │   │   │   canvas.jpg
+        │   │   │   darker.jpg
+        │   │   │   glyphicons-halflings-white.png
+        │   │   │   glyphicons-halflings.png
+        │   │   │   loading.gif
+        │   │   │   nav-divider.jpg
+        │   │   │   nav-divider.png
+        │   │   │   paypal.gif
+        │   │   │   price-slider.jpg
+        │   │   │   rhs-ad.jpg
+        │   │   │   right_column_headerbg.jpg
+        │   │   │   search-button.png
+        │   │   │   sharethis.png
+        │   │   │   shopping_cart.png
+        │   │   │   sidebarbg.jpg
+        │   │   │   star.gif
+        │   │   │   the-heat-clinic-logo-internal.png
+        │   │   │   the-heat-clinic-logo.png
+        │   │   │   the-heat-clinic-seal.png
+        │   │   │   x.png
+        │   │   │   zoomloader.gif
+        │   │   │
+        │   │   ├───flags
+        │   │   │       France.png
+        │   │   │       Mexico.png
+        │   │   │       Spain.png
+        │   │   │       United-Kingdom.png
+        │   │   │       United-States.png
+        │   │   │
+        │   │   └───payment
+        │   │           american-express-curved-32px.png
+        │   │           discover-curved-32px.png
+        │   │           mastercard-curved-32px.png
+        │   │           paypal-curved-32px.png
+        │   │           visa-curved-32px.png
+        │   │
+        │   ├───js
+        │   │   │   accountManagementEventHandlers.js
+        │   │   │   accountManagementOperations.js
+        │   │   │   cartEventHandlers.js
+        │   │   │   cartOperations.js
+        │   │   │   categoryFilter.js
+        │   │   │   checkoutEventHandlers.js
+        │   │   │   checkoutOperations.js
+        │   │   │   globalOnReady.js
+        │   │   │   globalOnReadyEventHandlers.js
+        │   │   │   heatClinic-uncacheableData.js
+        │   │   │   heatClinicEventHandlers.js
+        │   │   │   heatClinicOperations.js
+        │   │   │   jssor.slider-20.min.js
+        │   │   │   loginRegisterEventHandlers.js
+        │   │   │   loginRegisterOperations.js
+        │   │   │   plugins.js
+        │   │   │   productPageEventHandlers.js
+        │   │   │   productPageOperations.js
+        │   │   │   reviewEventHandlers.js
+        │   │   │   reviewOperations.js
+        │   │   │   samplePaymentService.js
+        │   │   │
+        │   │   └───libs
+        │   │       │   jquery-3.1.1.min.js
+        │   │       │   jquery.dotdotdot-1.5.1.js
+        │   │       │   jquery.MetaData.js
+        │   │       │   jquery.rating.pack.js
+        │   │       │   jquery.zoom.js
+        │   │       │   jquery.zoom.min.js
+        │   │       │   modernizr-2.5.3.min.js
+        │   │       │   toastr.js
+        │   │       │
+        │   │       └───material-kit
+        │   │               atv-img-animation.js
+        │   │               bootstrap-datetimepicker.js
+        │   │               bootstrap-selectpicker.js
+        │   │               bootstrap-tagsinput.js
+        │   │               bootstrap.min.js
+        │   │               jasny-bootstrap.min.js
+        │   │               jquery.flexisel.js
+        │   │               jquery.min.js
+        │   │               material-kit.js
+        │   │               material-kit.min.js
+        │   │               material.min.js
+        │   │               moment.min.js
+        │   │               nouislider.min.js
+        │   │
+        │   ├───runtime-properties
+        │   │       common.properties
+        │   │       default.properties
+        │   │       integrationdev.properties
+        │   │       integrationqa.properties
+        │   │       production.properties
+        │   │       staging.properties
+        │   │
+        │   └───webTemplates
+        │       │   error.html
+        │       │
+        │       ├───account
+        │       │   │   changePassword.html
+        │       │   │   credit.html
+        │       │   │   manageCustomerAddresses.html
+        │       │   │   manageCustomerPayments.html
+        │       │   │   manageWishlist.html
+        │       │   │   orderHistory.html
+        │       │   │   redeemGiftCard.html
+        │       │   │   updateAccount.html
+        │       │   │
+        │       │   └───partials
+        │       │           accountMenu.html
+        │       │           customerAddress.html
+        │       │           orderDetails.html
+        │       │           savedPaymentForm.html
+        │       │           wishlistItemsRow.html
+        │       │
+        │       ├───authentication
+        │       │       forgotPassword.html
+        │       │       forgotPasswordSuccess.html
+        │       │       login.html
+        │       │       loginForm.html
+        │       │       registerForm.html
+        │       │       resetPassword.html
+        │       │       resetPasswordError.html
+        │       │
+        │       ├───cart
+        │       │   │   cart.html
+        │       │   │
+        │       │   └───partials
+        │       │           cartBundledProducts.html
+        │       │           cartItemSummary.html
+        │       │           cartOperations.html
+        │       │           cartPricingSummary.html
+        │       │           cartProductRow.html
+        │       │
+        │       ├───catalog
+        │       │   │   category.html
+        │       │   │   product.html
+        │       │   │   search.html
+        │       │   │   sku.html
+        │       │   │
+        │       │   └───partials
+        │       │           facetFilter.html
+        │       │           facetValueDisplay.html
+        │       │           featuredProduct.html
+        │       │           offers.html
+        │       │           productListItem.html
+        │       │           productListItemHoverActions.html
+        │       │           productOperations.html
+        │       │           productOptions.html
+        │       │           productPagingOptions.html
+        │       │           productPrice.html
+        │       │           productQuickView.html
+        │       │           productReviews.html
+        │       │           productSortOptions.html
+        │       │           productZoomModal.html
+        │       │           relatedProduct.html
+        │       │           review.html
+        │       │           reviewSuccessful.html
+        │       │           rightHandBannerAds.html
+        │       │           skuListItem.html
+        │       │           socialMediaButtons.html
+        │       │           wishlistButton.html
+        │       │
+        │       ├───checkout
+        │       │   │   checkout.html
+        │       │   │   checkoutLogin.html
+        │       │   │   confirmation.html
+        │       │   │   multiship.html
+        │       │   │   multishipAddAddressForm.html
+        │       │   │
+        │       │   ├───partials
+        │       │   │       accountCreditForm.html
+        │       │   │       applyCreditForm.html
+        │       │   │       applyGiftCard.html
+        │       │   │       billingAddress.html
+        │       │   │       checkoutAlert.html
+        │       │   │       checkoutStages.html
+        │       │   │       confirmationMessages.html
+        │       │   │       confirmationPaymentInfo.html
+        │       │   │       confirmationShippingInfo.html
+        │       │   │       demoDisclaimer.html
+        │       │   │       miniCart.html
+        │       │   │       miniCartItemList.html
+        │       │   │       multishipInfo.html
+        │       │   │       multiShipInfoForm.html
+        │       │   │       orderInfoForm.html
+        │       │   │       orderItemConfigureMessaging.html
+        │       │   │       orderSummary.html
+        │       │   │       paymentMethods.html
+        │       │   │       promoCodes.html
+        │       │   │       shippingInfoForm.html
+        │       │   │       singleShipInfoForm.html
+        │       │   │
+        │       │   ├───payment
+        │       │   │       codPaymentMethodForm.html
+        │       │   │       creditCardPaymentMethodForm.html
+        │       │   │       payPalPaymentMethodForm.html
+        │       │   │
+        │       │   └───stages
+        │       │           paymentStage.html
+        │       │           reviewStage.html
+        │       │           shippingStage.html
+        │       │
+        │       ├───contactus
+        │       │       contactus.html
+        │       │       success.html
+        │       │
+        │       ├───content
+        │       │       default.html
+        │       │       news.html
+        │       │       NONE.html
+        │       │       plain.html
+        │       │       simple.html
+        │       │
+        │       ├───homepage
+        │       │       bannerAd.html
+        │       │       middlePromo.html
+        │       │
+        │       ├───layout
+        │       │   │   accountLayout.html
+        │       │   │   checkoutPageLayout.html
+        │       │   │   fullPageLayout.html
+        │       │   │   fullPageNoNavLayout.html
+        │       │   │   homepage.html
+        │       │   │
+        │       │   └───partials
+        │       │           breadcrumbs.html
+        │       │           footer.html
+        │       │           head.html
+        │       │           modals.html
+        │       │           nav.html
+        │       │           navLocaleSelector.html
+        │       │           navMegaMenu.html
+        │       │           navMenu.html
+        │       │           registeredCustomerActions.html
+        │       │
+        │       ├───partials
+        │       │       creditCard.html
+        │       │       creditCardTypes.html
+        │       │       savedPaymentCard.html
+        │       │       simpleAddress.html
+        │       │
+        │       ├───seo
+        │       │   └───partials
+        │       │           seoMetaProperties.html
+        │       │
+        │       └───utility
+        │               blcRedirect.html
+        │               error.html
+        │
+        ├───generated-sources
+        │   └───annotations
+        ├───maven-archiver
+        │       pom.properties
+        │
+        └───maven-status
+            └───maven-compiler-plugin
+                └───compile
+                    └───default-compile
+                            createdFiles.lst
+                            inputFiles.lst

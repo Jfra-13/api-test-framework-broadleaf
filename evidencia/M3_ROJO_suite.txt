@@ -1,0 +1,58 @@
+OE4 — Mutación M3 (eliminación de llave requerida `status`) — SUITE EN ROJO
+Filtro SUT activo: Oe4CartContractMutationFilter MUTATION="M3" (borra `status` del JSON de /cart)
+Runner: com.tesis.automation.runners.RunCucumberTest
+Resultado: Process finished with exit code -1
+
+Detector ÚNICO = JSON Schema (cart-schema.json). 3 escenarios fallan, todos por la misma causa:
+"object has missing required properties (["status"])".
+
+El step de checkout final `el campo "status" debe ser "SUBMITTED"` (checkout.feature) PASÓ:
+el filtro muta sólo /cart, no la orden final → sin confusor, detección limpia por contrato.
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 1 — features/cart.feature:11  (Scenario: Creación de un carrito nuevo)
+───────────────────────────────────────────────────────────────────────────
+  And la respuesta cumple con el contrato "cart-schema.json"
+      java.lang.AssertionError: 1 expectation failed.
+Response body doesn't match expectation.
+Expected: The content to match the given JSON schema.
+error: object has missing required properties (["status"])
+    level: "error"
+    schema: {"loadingURI":"file:/.../target/test-classes/schemas/cart-schema.json#","pointer":""}
+    instance: {"pointer":""}
+    domain: "validation"
+    keyword: "required"
+    required: ["customer","id","itemCount","status"]
+    missing: ["status"]
+  Actual: {"id":1,...,"itemCount":0,"customer":{...},...}   (sin campo "status")
+    at com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(CheckoutSteps.java:81)
+    at ✽.la respuesta cumple con el contrato "cart-schema.json"(classpath:features/cart.feature:11)
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 2 — features/cart.feature:20  (Scenario: Agregar un producto al carrito)
+───────────────────────────────────────────────────────────────────────────
+  And la respuesta cumple con el contrato "cart-schema.json"
+      java.lang.AssertionError: 1 expectation failed.
+error: object has missing required properties (["status"])
+    keyword: "required"
+    required: ["customer","id","itemCount","status"]
+    missing: ["status"]
+  Actual: {"id":2,...,"itemCount":1,"orderItems":[...],...}  (sin campo "status")
+    at com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(CheckoutSteps.java:81)
+    at ✽.la respuesta cumple con el contrato "cart-schema.json"(classpath:features/cart.feature:20)
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 3 — features/checkout.feature:17  (Scenario: Happy Path, validación de /cart)
+───────────────────────────────────────────────────────────────────────────
+  And la respuesta cumple con el contrato "cart-schema.json"
+      java.lang.AssertionError: 1 expectation failed.
+error: object has missing required properties (["status"])
+    keyword: "required"
+    required: ["customer","id","itemCount","status"]
+    missing: ["status"]
+  Actual: {"id":4,...,"itemCount":0,"customer":{...},...}   (sin campo "status")
+    at com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(CheckoutSteps.java:81)
+    at ✽.la respuesta cumple con el contrato "cart-schema.json"(classpath:features/checkout.feature:17)
+
+═══════════════════════════════════════════════════════════════════════════
+Process finished with exit code -1
