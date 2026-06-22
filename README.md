@@ -115,3 +115,39 @@ C:\Users\Public\.maven\maven-3.9.16\bin\mvn.cmd allure:serve
 ```
 
 > Los resultados de Allure se generan en `./allure-results/` y el reporte HTML en `./target/cucumber-report.html`.
+
+---
+
+## Integración Continua (OE3)
+
+Pipeline de GitHub Actions: `.github/workflows/ci-pipeline.yml`.
+
+### Disparadores
+
+- `push` a las ramas `main` / `master`.
+- Ejecución manual (`workflow_dispatch`) desde la pestaña **Actions** del repo.
+
+### Qué hace
+
+| Job | Acción |
+|-----|--------|
+| `api-tests` | Levanta Ubuntu + JDK 17 (Temurin) con caché Maven, ejecuta `mvn -B clean test`, genera el reporte Allure (`mvn -B allure:report`) y sube los resultados crudos como artifact descargable (retención 30 días). |
+| `deploy-report` | Publica el reporte Allure en **GitHub Pages** (URL navegable). |
+
+### Conexión con el SUT (Broadleaf)
+
+El SUT corre en tu PC. Para que el runner de GitHub lo alcance, se expone con un túnel **ngrok** y su URL pública se inyecta vía variable de entorno.
+
+1. Levantar el DemoSite local (`https://localhost:7445`).
+2. Abrir el túnel: `ngrok http https://localhost:7445`.
+3. Guardar la URL pública de ngrok (incluyendo `/api/v1`) como **Secret** del repositorio:
+   - Repo → **Settings → Secrets and variables → Actions → New repository secret**
+   - Nombre: `BASE_URL`
+4. Lanzar el pipeline (push o ejecución manual).
+
+`BaseApiClient` lee la URL con `System.getenv("BASE_URL")`. Si el Secret está vacío, cae a `localhost:7445`.
+
+### Resultado
+
+- **Reporte Allure** publicado en GitHub Pages (ver URL en el job `deploy-report`).
+- **Artifact** `allure-results` descargable desde la corrida en la pestaña Actions.
