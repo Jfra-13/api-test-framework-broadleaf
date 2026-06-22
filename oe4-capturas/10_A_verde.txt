@@ -1,0 +1,32 @@
+OE4 — Mutación A (renombrar `customer` → `cliente`) — SUITE EN VERDE (contrato adaptado)
+Filtro SUT activo: Oe4CartContractMutationFilter MUTATION="A" (GET /cart devuelve "cliente")
+Mitigación: se adapta el contrato cart-schema.json para exigir "cliente" en vez de "customer".
+Runner: com.tesis.automation.runners.RunCucumberTest
+Resultado: Tests run: 15, Failures: 0, Errors: 0  → exit code 0 (VERDE)
+
+Una vez que el contrato refleja el nuevo nombre de la llave, los 3 escenarios que
+antes fallaban vuelven a pasar. Sin falsos positivos. Validación de contrato exitosa.
+
+═══════════════════════════════════════════════════════════════════════════
+CODE CHURN — git diff --stat
+───────────────────────────────────────────────────────────────────────────
+ src/test/resources/schemas/cart-schema.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+  → 1 archivo (CHURN_A_ARCH=1), 2 líneas modificadas (CHURN_A_LIN=2)
+  → 2/2187 = 0,09 % del denominador congelado
+
+═══════════════════════════════════════════════════════════════════════════
+DIFF — cart-schema.json
+───────────────────────────────────────────────────────────────────────────
+@@ "required" array
+-  "required": ["id", "status", "itemCount", "customer"],
++  "required": ["id", "status", "itemCount", "cliente"],
+
+@@ "properties" object
+-    "customer": { "type": ["object", "null"] },
++    "cliente": { "type": ["object", "null"] },
+
+═══════════════════════════════════════════════════════════════════════════
+Tests run: 15, Failures: 0, Errors: 0  → SUITE EN VERDE (mutación A mitigada, churn = 2 líneas)
+

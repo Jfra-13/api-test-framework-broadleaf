@@ -1,0 +1,52 @@
+OE4 — Mutación A (renombrar llave requerida `customer` → `cliente`) — SUITE EN ROJO
+Filtro SUT activo: Oe4CartContractMutationFilter MUTATION="A" (renombra `customer` a `cliente` en el JSON de /cart)
+Runner: com.tesis.automation.runners.RunCucumberTest
+Resultado: Tests run: 15, Failures: 3, Errors: 0  → exit con fallos
+
+Detector ÚNICO = JSON Schema (cart-schema.json). 3 escenarios fallan, todos por la misma causa:
+"object has missing required properties (["customer"])".
+
+Verificación en vivo: GET /cart devuelve "cliente":{...} en lugar de "customer":{...}.
+El contrato sigue exigiendo la llave "customer" → la mutación queda detectada por schema.
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 1 — features/cart.feature:11  (Scenario: Creación de un carrito nuevo)
+───────────────────────────────────────────────────────────────────────────
+  And la respuesta cumple con el contrato "cart-schema.json"
+      java.lang.AssertionError: 1 expectation failed.
+Response body doesn't match expectation.
+Expected: The content to match the given JSON schema.
+error: object has missing required properties (["customer"])
+    level: "error"
+    schema: {"loadingURI":"file:/.../target/test-classes/schemas/cart-schema.json#","pointer":""}
+    instance: {"pointer":""}
+    domain: "validation"
+    keyword: "required"
+    required: ["customer","id","itemCount","status"]
+    missing: ["customer"]
+  Actual: {"id":1,...,"itemCount":0,"cliente":{"id":112,...},...}   (sin campo "customer")
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 2 — features/cart.feature:20  (Scenario: Agregar un producto al carrito)
+───────────────────────────────────────────────────────────────────────────
+  And la respuesta cumple con el contrato "cart-schema.json"
+      java.lang.AssertionError: 1 expectation failed.
+error: object has missing required properties (["customer"])
+    keyword: "required"
+    required: ["customer","id","itemCount","status"]
+    missing: ["customer"]
+  Actual: {"id":3,...,"itemCount":1,"cliente":{"id":105,...},"orderItems":[...],...}  (sin campo "customer")
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 3 — features/checkout.feature:17  (Scenario: Happy Path, validación de /cart)
+───────────────────────────────────────────────────────────────────────────
+  And la respuesta cumple con el contrato "cart-schema.json"
+      java.lang.AssertionError: 1 expectation failed.
+error: object has missing required properties (["customer"])
+    keyword: "required"
+    required: ["customer","id","itemCount","status"]
+    missing: ["customer"]
+  Actual: {"id":2,...,"itemCount":0,"cliente":{"id":103,...},...}   (sin campo "customer")
+
+═══════════════════════════════════════════════════════════════════════════
+Tests run: 15, Failures: 3, Errors: 0  → SUITE EN ROJO (mutación A detectada por contrato)

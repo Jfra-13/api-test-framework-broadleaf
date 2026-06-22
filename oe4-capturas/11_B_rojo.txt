@@ -1,0 +1,42 @@
+OE4 — Mutación B (renombrar llave requerida `id` → `idCarrito`) — SUITE EN ROJO
+Filtro SUT activo: Oe4CartContractMutationFilter MUTATION="B" (renombra `id` raíz a `idCarrito` en /cart)
+Runner: com.tesis.automation.runners.RunCucumberTest + CheckoutHappyPathTest
+Resultado: Tests run: 15, Failures: 5, Errors: 3  → exit con fallos
+
+Verificación en vivo: GET /cart devuelve {"idCarrito":1,...} en lugar de {"id":1,...}.
+A diferencia de A/M2/M3 (solo schema), B se detecta TAMBIÉN a nivel Gherkin: la feature
+referencia el campo "id" de forma explícita, y el id del carrito se consume aguas abajo
+(pathParam de add-item, shipping, payment, checkout) → cascada de fallos.
+
+═══════════════════════════════════════════════════════════════════════════
+FALLO 1 (Gherkin) — features/cart.feature:10  "la respuesta contiene un campo \"id\" de tipo número"
+───────────────────────────────────────────────────────────────────────────
+  java.lang.AssertionError:
+  Expected: is not null
+       but: was null
+    at com.tesis.automation.steps.CommonSteps.validateFieldIsNumber(CommonSteps.java:89)
+    at ✽.la respuesta contiene un campo "id" de tipo número(classpath:features/cart.feature:10)
+
+FALLO 2 (cascada) — features/cart.feature:18  "el usuario agrega 1 unidad del SKU al carrito"
+───────────────────────────────────────────────────────────────────────────
+  java.lang.AssertionError:
+  Expected: is <200>  but: was <400>   (sin id de carrito, el endpoint rechaza la operación)
+    at com.tesis.automation.steps.CartSteps.userAddsItemToCart(CartSteps.java:38)
+
+FALLO 3 (Gherkin) — features/checkout.feature:16  "la respuesta contiene un campo \"id\" de tipo número"
+───────────────────────────────────────────────────────────────────────────
+  Expected: is not null  but: was null
+    at com.tesis.automation.steps.CommonSteps.validateFieldIsNumber(CommonSteps.java:89)
+
+═══════════════════════════════════════════════════════════════════════════
+ERRORES (cascada id null) — CheckoutHappyPathTest
+───────────────────────────────────────────────────────────────────────────
+  java.lang.IllegalArgumentException: parameterValue cannot be null
+    at io.restassured...RequestSpecificationImpl.pathParam(...)
+  - test_03_AddItemToCart        (CheckoutHappyPathTest.java:75)
+  - test_04_ConfigureShipping    (CheckoutHappyPathTest.java:110)
+  - test_04b_SelectShippingOption(CheckoutHappyPathTest.java:157)
+  → el id del carrito (ahora "idCarrito") se extrae null y se usa como pathParam.
+
+═══════════════════════════════════════════════════════════════════════════
+Tests run: 15, Failures: 5, Errors: 3  → SUITE EN ROJO (mutación B detectada por Gherkin + schema + cascada)

@@ -1,0 +1,36 @@
+CONTROL NEGATIVO — refactor interno sin cambio de contrato — ESTADO VERDE
+Filtro SUT: ACTIVE=false (sin mutacion inyectada)
+Esperado: suite VERDE + Code Churn = 0  ->  especificidad (0 falsos positivos)
+Runner: com.tesis.automation.runners.RunCucumberTest   |   exit code 0
+--------------------------------------------------------------------------------
+Scenario: Creacion de un carrito nuevo                                     # features/cart.feature:7
+  Given el servidor API esta disponible en "https://localhost:7445/api/v1" # CommonSteps.apiIsAvailableAt
+  And la sesion HTTP esta inicializada con JSESSIONID                      # CommonSteps.sessionIsInitializedWithJsessionid
+[main] INFO com.tesis.automation.clients.BaseApiClient - SUT base URL = https://localhost:7445/api/v1
+[main] INFO com.tesis.automation.clients.CartApiClient - Creating new cart...
+[main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//cart
+[main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 651
+  Given el usuario obtiene un nuevo carrito de compras                     # CartSteps.userGetsNewCart
+  Then la respuesta debe tener codigo de estado 200                        # CommonSteps.validateStatusCode
+  And la respuesta contiene un campo "id" de tipo numero                   # CommonSteps.validateFieldIsNumber
+  And el campo "itemCount" debe ser igual a 0                              # CommonSteps.fieldEqualsInt
+Validacion de contrato exitosa: cart-schema.json
+  And la respuesta cumple con el contrato "cart-schema.json"               # CheckoutSteps.validateAgainstSchema
+--------------------------------------------------------------------------------
+(... resto de escenarios en verde ...)
+Validacion de contrato exitosa: cart-schema.json        (GET /cart, body 651 = 'status' presente)
+Validacion de contrato exitosa: cart-schema.json        (POST /cart/{id}/item)
+Validacion de contrato exitosa: cart-schema.json
+Validacion de contrato exitosa: order-payment-schema.json
+Validacion de contrato exitosa: checkout-schema.json
+Checkout Completado con exito!  -> Orden generada
+--------------------------------------------------------------------------------
+Body Length 651 = respuesta SIN mutar (contiene 'status', itemCount real = 0).
+Un cambio interno (rename de variable del controller) NO altera el contrato
+observable -> ningun detector se dispara -> suite VERDE.
+
+MEDICION DE CODE CHURN (capa de test):
+  $ git diff --stat
+  (sin salida)   ->   0 archivos / 0 lineas modificadas  =  CTRL_CHURN = 0,00%
+
+Process finished with exit code 0

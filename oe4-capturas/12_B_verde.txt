@@ -1,0 +1,46 @@
+OE4 — Mutación B (renombrar `id` → `idCarrito`) — SUITE EN VERDE (contrato + suite adaptados)
+Filtro SUT activo: Oe4CartContractMutationFilter MUTATION="B" (GET /cart devuelve "idCarrito")
+Runner: com.tesis.automation.runners.RunCucumberTest + CheckoutHappyPathTest
+Resultado: Tests run: 15, Failures: 0, Errors: 0  → exit code 0 (VERDE)
+
+A diferencia de A (1 archivo / 2 líneas), B obliga a tocar 5 archivos: el campo "id" del
+carrito se consume en el schema, en los .feature (Gherkin), y en el código que extrae el id
+para reusarlo aguas abajo. Mayor acoplamiento del campo = mayor Code Churn.
+
+═══════════════════════════════════════════════════════════════════════════
+CODE CHURN — git diff --stat
+───────────────────────────────────────────────────────────────────────────
+ src/test/java/com/tesis/automation/steps/CartSteps.java               | 4 ++--
+ .../tesis/automation/tests/checkout/CheckoutHappyPathTest.java        | 2 +-
+ src/test/resources/features/cart.feature                              | 2 +-
+ src/test/resources/features/checkout.feature                          | 2 +-
+ src/test/resources/schemas/cart-schema.json                          | 4 ++--
+ 5 files changed, 7 insertions(+), 7 deletions(-)
+
+  → 5 archivos (CHURN_B_ARCH=5), 7 líneas modificadas (CHURN_B_LIN=7)
+  → 7/2187 = 0,32 % del denominador congelado
+  → B_GHERKIN = Sí (la feature referenciaba "id"); A_GHERKIN = No
+
+═══════════════════════════════════════════════════════════════════════════
+DIFF (resumen de cambios id → idCarrito)
+───────────────────────────────────────────────────────────────────────────
+cart-schema.json
+-  "required": ["id", "status", "itemCount", "customer"],
++  "required": ["idCarrito", "status", "itemCount", "customer"],
+-    "id": { "type": "integer" },
++    "idCarrito": { "type": "integer" },
+
+cart.feature:10 / checkout.feature:16
+-    And la respuesta contiene un campo "id" de tipo número
++    And la respuesta contiene un campo "idCarrito" de tipo número
+
+CartSteps.java:24 y :63
+-        String cartId = response.jsonPath().getString("id");
++        String cartId = response.jsonPath().getString("idCarrito");
+
+CheckoutHappyPathTest.java:42
+-        capturedCartId = response.jsonPath().getString("id");
++        capturedCartId = response.jsonPath().getString("idCarrito");
+
+═══════════════════════════════════════════════════════════════════════════
+Tests run: 15, Failures: 0, Errors: 0  → SUITE EN VERDE (mutación B mitigada, churn = 7 líneas / 5 archivos)

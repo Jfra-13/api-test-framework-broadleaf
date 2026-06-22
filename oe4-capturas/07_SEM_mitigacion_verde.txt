@@ -1,0 +1,35 @@
+SEM — MITIGACION (asercion de valor itemCount==0) — ESTADO VERDE
+Filtro SUT: ACTIVE=false | carrito nuevo real = itemCount 0 -> 0==0 pasa
+Confirma que la asercion de mitigacion NO genera falso positivo (especificidad).
+Runner: com.tesis.automation.runners.RunCucumberTest
+--------------------------------------------------------------------------------
+Scenario: Creación de un carrito nuevo                                     # features/cart.feature:7
+01:30:50.830 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+01:30:50.832 [main] INFO com.tesis.automation.hooks.CommonHooks - 🚀 INICIANDO ESCENARIO CUCUMBER
+01:30:50.832 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+  Given el servidor API está disponible en "https://localhost:7445/api/v1" # com.tesis.automation.steps.CommonSteps.apiIsAvailableAt(java.lang.String)
+  And la sesión HTTP está inicializada con JSESSIONID                      # com.tesis.automation.steps.CommonSteps.sessionIsInitializedWithJsessionid()
+01:30:51.514 [main] INFO com.tesis.automation.clients.BaseApiClient - SUT base URL = https://localhost:7445/api/v1
+01:30:51.516 [main] INFO com.tesis.automation.clients.CartApiClient - Creating new cart...
+01:30:51.516 [main] INFO com.tesis.automation.clients.BaseApiClient - GET https://localhost:7445/api/v1//cart
+01:30:53.034 [main] INFO com.tesis.automation.clients.BaseApiClient - Status: 200 | Body Length: 651
+Carrito creado con ID: 1
+[OE4-SEM] itemCount GET /cart = 0
+  Given el usuario obtiene un nuevo carrito de compras                     # com.tesis.automation.steps.CartSteps.userGetsNewCart()
+  Then la respuesta debe tener código de estado 200                        # com.tesis.automation.steps.CommonSteps.validateStatusCode(int)
+  And la respuesta contiene un campo "id" de tipo número                   # com.tesis.automation.steps.CommonSteps.validateFieldIsNumber(java.lang.String)
+  And el campo "itemCount" debe ser igual a 0                              # com.tesis.automation.steps.CommonSteps.fieldEqualsInt(java.lang.String,int)
+Validacion de contrato exitosa: cart-schema.json
+  And la respuesta cumple con el contrato "cart-schema.json"               # com.tesis.automation.steps.CheckoutSteps.validateAgainstSchema(java.lang.String)
+Cart ID capturado: 1
+  And se captura el ID del carrito para usar en próximas solicitudes       # com.tesis.automation.steps.CartSteps.captureCartId()
+01:30:54.784 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+01:30:54.784 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+01:30:54.784 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+--------------------------------------------------------------------------------
+01:30:58.406 [main] INFO com.tesis.automation.hooks.CommonHooks - ✅ ESCENARIO FINALIZADO
+01:30:58.406 [main] INFO com.tesis.automation.hooks.CommonHooks - ═══════════════════════════════════════════════════════════
+
+
+Process finished with exit code 0

@@ -1,0 +1,13 @@
+diff --git a/src/test/resources/schemas/cart-schema.json b/src/test/resources/schemas/cart-schema.json
+index 030fd90..bfbe1da 100644
+--- a/src/test/resources/schemas/cart-schema.json
++++ b/src/test/resources/schemas/cart-schema.json
+@@ -8,7 +8,7 @@
+     "orderNumber": { "type": ["string", "null"] },
+     "status": { "type": "string", "enum": ["IN_PROCESS", "SUBMITTED"] },
+     "submitDate": { "type": ["string", "null"] },
+-    "itemCount": { "type": "integer" },
++    "itemCount": { "type": "string" },
+     "subTotal": { "type": ["object", "null"] },
+     "total": { "type": ["object", "null"] },
+     "totalTax": { "type": ["object", "null"] },
